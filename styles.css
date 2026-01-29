@@ -56,11 +56,11 @@ html { scroll-behavior: smooth; font-size: 16px; }
    =================================== */
 .main-nav { 
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
-    background: rgba(248, 249, 251, 0.65); /* High Transparency Kept */
+    background: rgba(248, 249, 251, 0.65); 
     backdrop-filter: blur(15px); 
     border-bottom: 1px solid rgba(255, 255, 255, 0.3); 
     transition: all var(--transition-base); 
-    height: 70px; /* Fixed height for sizing */
+    height: 70px; 
     display: flex; align-items: center;
 }
 .nav-container { 
@@ -87,7 +87,7 @@ html { scroll-behavior: smooth; font-size: 16px; }
 .hero-section { 
     min-height: 100vh; display: flex; align-items: center; 
     padding: var(--space-3xl) var(--space-lg); 
-    padding-top: 100px; /* Standard Padding */
+    padding-top: 100px; 
     position: relative; overflow: hidden; 
     background: linear-gradient(135deg, #f0f4f8 0%, #d1e4ff 100%); 
 }
@@ -192,8 +192,8 @@ section { padding: var(--space-3xl) var(--space-lg); }
 .modal.active { display: flex; animation: fadeIn 0.3s ease; }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.7); /* GLASSY TRANSPARENCY */
-    backdrop-filter: blur(25px); /* BLUR EFFECT */
+    background: rgba(255, 255, 255, 0.7); 
+    backdrop-filter: blur(25px);
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: var(--radius-xl);
     width: min(95%, 850px);
@@ -260,8 +260,56 @@ section { padding: var(--space-3xl) var(--space-lg); }
 .ref-btn:hover { transform: scale(1.1); }
 
 /* ===================================
-   ADMIN PANEL
+   ADMIN PANEL (Fixed Login UI)
    =================================== */
+/* Styles specifically for the Login Container */
+#adminLoginSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+/* Styles for inputs inside the login section */
+#adminLoginSection input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--surface-variant);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+#adminLoginSection input:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+/* Styles for the login button */
+#adminLoginSection button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#adminLoginSection button:hover {
+    background: var(--on-primary-container);
+}
+
 .admin-tabs { display: flex; gap: 5px; padding: 0 var(--space-xl); border-bottom: 1px solid rgba(0,0,0,0.05); }
 .admin-tab { padding: 10px 20px; background: none; border: none; border-radius: 8px 8px 0 0; font-weight: 600; cursor: pointer; color: var(--on-surface-variant); }
 .admin-tab.active { background: var(--primary-container); color: var(--primary); }
@@ -274,7 +322,7 @@ section { padding: var(--space-3xl) var(--space-lg); }
 .btn-delete { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
 
 /* ===================================
-   RESPONSIVE DESIGN (Fixing Overlap & Padding)
+   RESPONSIVE DESIGN (Rebuilt Mobile Layout)
    =================================== */
 @media (max-width: 1024px) {
     .references-grid { grid-template-columns: repeat(2, 1fr); }
@@ -285,11 +333,11 @@ section { padding: var(--space-3xl) var(--space-lg); }
 @media (max-width: 768px) {
     /* FIX: Navbar overlapping content - Increased top padding */
     .hero-section {
-        padding-top: 140px !important; /* Push hero down */
+        padding-top: 140px !important; /* Push hero down specifically on mobile */
         padding-bottom: 3rem;
     }
 
-    /* FIX: Mobile Menu Visibility - Solid Background */
+    /* FIX: Mobile Menu Visibility - Solid Background for readability */
     .nav-links { 
         display: none; 
         position: absolute; top: 70px; left: 0; right: 0; 
@@ -301,16 +349,26 @@ section { padding: var(--space-3xl) var(--space-lg); }
     .nav-links.active { display: flex; }
     .mobile-menu-toggle { display: block; }
 
-    /* FIX: Grids becoming single column for Mobile */
-    .references-grid, .projects-grid, .skills-grid, .education-grid { grid-template-columns: 1fr !important; }
+    /* FIX: Force 1-Column Layout on Mobile */
+    .references-grid, 
+    .projects-grid, 
+    .skills-grid, 
+    .education-grid { 
+        grid-template-columns: 1fr !important; 
+    }
     
-    /* FIX: Modal Padding for Phones */
-    .modal-content { width: 95% !important; max-height: 90vh; }
+    /* FIX: Adjust Modal Padding for small screens */
+    .modal-content { 
+        width: 95% !important; 
+        max-height: 90vh; 
+    }
     .modal-header { padding: 1.25rem !important; }
-    .modal-body, .detail-body, .private-projects-content, .admin-content { padding: 0 1.25rem 1.25rem 1.25rem !important; }
+    .modal-body, .detail-body, .private-projects-content, .admin-content { 
+        padding: 0 1.25rem 1.25rem 1.25rem !important; 
+    }
     .modal-header h2 { font-size: 1.4rem; }
 
-    /* FIX: Button Stacking */
+    /* FIX: Stack buttons vertically if needed */
     .hero-actions { justify-content: center; }
     .references-trigger { width: 100%; min-width: auto; }
 }
