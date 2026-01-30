@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,13 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
+
 <body>
 
     <nav class="main-nav">
@@ -46,9 +51,10 @@
                     <span class="highlight-text">Intersection of Innovation.</span>
                 </h1>
                 <p class="hero-description">
-                    Mechanical R&D Engineer specializing in fluid dynamics, autonomous systems, and product development. Transforming complex physics into practical engineering solutions.
+                    Mechanical R&D Engineer specializing in fluid dynamics, autonomous systems, and product development.
+                    Transforming complex physics into practical engineering solutions.
                 </p>
-                
+
                 <div class="hero-stats">
                     <div class="stat-item">
                         <div class="stat-number">3+</div>
@@ -76,18 +82,45 @@
                 </div>
             </div>
 
-            <div class="hero-visual">
-                <div class="visual-card card-1">
-                    <span class="material-symbols-rounded">settings</span>
+            <div class="hero-visual" id="heroVisual">
+                <div class="visual-card card-1" data-speed="2">
+                    <div class="card-icon-box">
+                        <span class="material-symbols-rounded">analytics</span>
+                    </div>
+                    <div class="card-text">
+                        <strong>CFD Analysis</strong>
+                        <span>Simulation</span>
+                    </div>
                 </div>
-                <div class="visual-card card-2">
-                    <span class="material-symbols-rounded">rocket_launch</span>
+
+                <div class="visual-card card-2" data-speed="-2">
+                    <div class="card-icon-box">
+                        <span class="material-symbols-rounded">experiment</span>
+                    </div>
+                    <div class="card-text">
+                        <strong>R&D</strong>
+                        <span>Innovation</span>
+                    </div>
                 </div>
-                <div class="visual-card card-3">
-                    <span class="material-symbols-rounded">precision_manufacturing</span>
+
+                <div class="visual-card card-3" data-speed="1.5">
+                    <div class="card-icon-box">
+                        <span class="material-symbols-rounded">precision_manufacturing</span>
+                    </div>
+                    <div class="card-text">
+                        <strong>Design</strong>
+                        <span>SolidWorks</span>
+                    </div>
                 </div>
-                <div class="visual-card card-4">
-                    <span class="material-symbols-rounded">science</span>
+
+                <div class="visual-card card-4" data-speed="-1.5">
+                    <div class="card-icon-box">
+                        <span class="material-symbols-rounded">settings_suggest</span>
+                    </div>
+                    <div class="card-text">
+                        <strong>Systems</strong>
+                        <span>Optimization</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,7 +133,7 @@
                 <h2 class="section-title">Professional Experience</h2>
             </div>
             <div class="timeline" id="experienceList">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -111,7 +144,7 @@
                 <h2 class="section-title">Featured Projects</h2>
             </div>
             <div class="projects-grid" id="publicProjects">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -122,7 +155,7 @@
                 <h2 class="section-title">Technical Skills</h2>
             </div>
             <div class="skills-grid" id="skillsList">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -133,7 +166,7 @@
                 <h2 class="section-title">Education</h2>
             </div>
             <div class="education-grid" id="educationList">
-                </div>
+            </div>
         </div>
     </section>
 
@@ -143,7 +176,8 @@
                 <span class="section-label">Get in Touch</span>
                 <h2 class="section-title">Let's Connect</h2>
                 <p style="margin-top: 1rem; color: var(--on-surface-variant);">
-                    Open to discussing opportunities in mechanical engineering, R&D, simulation, and product development.
+                    Open to discussing opportunities in mechanical engineering, R&D, simulation, and product
+                    development.
                 </p>
             </div>
 
@@ -186,7 +220,9 @@
 
     <footer style="text-align: center; padding: 2rem; color: var(--on-surface-variant); font-size: 0.9rem;">
         <p>&copy; 2025 Adarsh R. All rights reserved.</p>
-        <button onclick="showAdminPanel()" style="background:none; border:none; color:inherit; opacity:0.5; cursor:pointer; font-size: 0.8rem; margin-top: 0.5rem;">Admin Login</button>
+        <button onclick="showAdminPanel()"
+            style="background:none; border:none; color:inherit; opacity:0.5; cursor:pointer; font-size: 0.8rem; margin-top: 0.5rem;">Admin
+            Login</button>
     </footer>
 
     <div id="projectDetailModal" class="modal">
@@ -198,7 +234,8 @@
                     </div>
                     <h2 id="detailTitle">Project Title</h2>
                 </div>
-                <button class="close-btn" onclick="closeProjectDetails()"><span class="material-symbols-rounded">close</span></button>
+                <button class="close-btn" onclick="closeProjectDetails()"><span
+                        class="material-symbols-rounded">close</span></button>
             </div>
             <div class="detail-body">
                 <p id="detailDescription" class="detail-description"></p>
@@ -212,11 +249,12 @@
         <div class="modal-content" style="width: min(95%, 1100px);">
             <div class="modal-header">
                 <h2>Professional References</h2>
-                <button class="close-btn" onclick="closeReferences()"><span class="material-symbols-rounded">close</span></button>
+                <button class="close-btn" onclick="closeReferences()"><span
+                        class="material-symbols-rounded">close</span></button>
             </div>
             <div class="modal-body">
                 <div class="references-grid" id="referencesListModal">
-                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -225,19 +263,23 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Private Projects</h2>
-                <button class="close-btn" onclick="closePrivateProjects()"><span class="material-symbols-rounded">close</span></button>
+                <button class="close-btn" onclick="closePrivateProjects()"><span
+                        class="material-symbols-rounded">close</span></button>
             </div>
-            
+
             <div id="passwordSection" class="password-section">
-                <span class="material-symbols-rounded" style="font-size: 3rem; color: var(--tertiary); margin-bottom: 1rem; display:block;">lock</span>
+                <span class="material-symbols-rounded"
+                    style="font-size: 3rem; color: var(--tertiary); margin-bottom: 1rem; display:block;">lock</span>
                 <p style="margin-bottom: 1.5rem;">Enter visitor password to view confidential projects.</p>
-                <input type="password" id="privatePassword" placeholder="Enter Password" onkeypress="handlePasswordEnter(event)">
-                <button class="btn-primary" onclick="verifyVisitorPassword()" style="margin-top: 1rem; width: 100%; justify-content: center;">Unlock</button>
+                <input type="password" id="privatePassword" placeholder="Enter Password"
+                    onkeypress="handlePasswordEnter(event)">
+                <button class="btn-primary" onclick="verifyVisitorPassword()"
+                    style="margin-top: 1rem; width: 100%; justify-content: center;">Unlock</button>
             </div>
 
             <div id="privateProjectsContent" class="private-projects-content" style="display: none;">
                 <div class="projects-grid" id="privateProjects">
-                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -246,13 +288,16 @@
         <div class="modal-content admin-modal">
             <div class="modal-header">
                 <h2>Admin Dashboard</h2>
-                <button class="close-btn" onclick="closeAdminPanel()"><span class="material-symbols-rounded">close</span></button>
+                <button class="close-btn" onclick="closeAdminPanel()"><span
+                        class="material-symbols-rounded">close</span></button>
             </div>
-            
+
             <div id="adminLoginSection" style="padding: 2rem; text-align: center;">
                 <p style="margin-bottom: 1.5rem;">Login with Firebase Account</p>
-                <input type="email" placeholder="Email" style="display:block; width:100%; max-width:300px; margin:0 auto 10px; padding:12px; border-radius:8px; border:1px solid #ccc;">
-                <input type="password" placeholder="Password" style="display:block; width:100%; max-width:300px; margin:0 auto 20px; padding:12px; border-radius:8px; border:1px solid #ccc;">
+                <input type="email" placeholder="Email"
+                    style="display:block; width:100%; max-width:300px; margin:0 auto 10px; padding:12px; border-radius:8px; border:1px solid #ccc;">
+                <input type="password" placeholder="Password"
+                    style="display:block; width:100%; max-width:300px; margin:0 auto 20px; padding:12px; border-radius:8px; border:1px solid #ccc;">
                 <button class="btn-primary" onclick="adminLogin()" style="width:100%; max-width:300px;">Login</button>
             </div>
 
@@ -265,14 +310,15 @@
                     <button class="admin-tab" onclick="switchAdminTab('references')">References</button>
                     <button class="admin-tab" onclick="switchAdminTab('settings')">Settings</button>
                 </div>
-                
+
                 <div class="admin-actions">
                     <button class="btn-primary" onclick="showAddItemForm()">+ Add New</button>
                 </div>
 
                 <div id="adminList" style="margin-top: 1rem;"></div>
 
-                <div id="addItemForm" style="display:none; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid #ddd;">
+                <div id="addItemForm"
+                    style="display:none; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid #ddd;">
                     <h3 style="margin-bottom: 1rem;">Edit Item</h3>
                     <input type="hidden" id="editItemId">
                     <div id="dynamicFormFields" style="display: flex; flex-direction: column; gap: 10px;"></div>
@@ -281,7 +327,7 @@
                         <button class="btn-secondary" onclick="cancelAddItem()">Cancel</button>
                     </div>
                 </div>
-                
+
                 <button class="btn-secondary" onclick="auth.signOut()" style="margin-top: 2rem;">Logout</button>
             </div>
         </div>
@@ -290,7 +336,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    
+
     <script src="script.js"></script>
 </body>
+
 </html>
