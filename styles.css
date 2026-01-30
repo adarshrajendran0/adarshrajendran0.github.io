@@ -333,7 +333,7 @@ section { padding: var(--space-3xl) var(--space-lg); }
 @media (max-width: 768px) {
     /* FIX: Navbar overlapping content - Increased top padding */
     .hero-section {
-        padding-top: 140px !important; /* Push hero down specifically on mobile */
+        padding-top: 140px !important; 
         padding-bottom: 3rem;
     }
 
@@ -341,7 +341,7 @@ section { padding: var(--space-3xl) var(--space-lg); }
     .nav-links { 
         display: none; 
         position: absolute; top: 70px; left: 0; right: 0; 
-        background: white; /* Solid background so text is readable */
+        background: white; 
         flex-direction: column; padding: 2rem; 
         border-bottom: 1px solid #ddd; 
         box-shadow: var(--shadow-lg);
@@ -355,6 +355,12 @@ section { padding: var(--space-3xl) var(--space-lg); }
     .skills-grid, 
     .education-grid { 
         grid-template-columns: 1fr !important; 
+    }
+
+    /* --- NEW FIX: DISABLE HIGHLIGHT SPAN ON MOBILE --- */
+    /* This stops cards from trying to be 2 columns wide on phone screens */
+    .project-card.highlight {
+        grid-column: auto !important;
     }
     
     /* FIX: Adjust Modal Padding for small screens */
