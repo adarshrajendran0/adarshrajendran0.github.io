@@ -220,9 +220,7 @@
 
     <footer style="text-align: center; padding: 2rem; color: var(--on-surface-variant); font-size: 0.9rem;">
         <p>&copy; 2025 Adarsh R. All rights reserved.</p>
-        <button onclick="showAdminPanel()"
-            style="background:none; border:none; color:inherit; opacity:0.5; cursor:pointer; font-size: 0.8rem; margin-top: 0.5rem;">Admin
-            Login</button>
+
     </footer>
 
     <div id="projectDetailModal" class="modal">
@@ -284,54 +282,7 @@
         </div>
     </div>
 
-    <div id="adminModal" class="modal">
-        <div class="modal-content admin-modal">
-            <div class="modal-header">
-                <h2>Admin Dashboard</h2>
-                <button class="close-btn" onclick="closeAdminPanel()"><span
-                        class="material-symbols-rounded">close</span></button>
-            </div>
 
-            <div id="adminLoginSection" style="padding: 2rem; text-align: center;">
-                <p style="margin-bottom: 1.5rem;">Login with Firebase Account</p>
-                <input type="email" placeholder="Email"
-                    style="display:block; width:100%; max-width:300px; margin:0 auto 10px; padding:12px; border-radius:8px; border:1px solid #ccc;">
-                <input type="password" placeholder="Password"
-                    style="display:block; width:100%; max-width:300px; margin:0 auto 20px; padding:12px; border-radius:8px; border:1px solid #ccc;">
-                <button class="btn-primary" onclick="adminLogin()" style="width:100%; max-width:300px;">Login</button>
-            </div>
-
-            <div id="adminContent" class="admin-content" style="display: none;">
-                <div class="admin-tabs">
-                    <button class="admin-tab active" onclick="switchAdminTab('projects')">Projects</button>
-                    <button class="admin-tab" onclick="switchAdminTab('experience')">Experience</button>
-                    <button class="admin-tab" onclick="switchAdminTab('education')">Education</button>
-                    <button class="admin-tab" onclick="switchAdminTab('skills')">Skills</button>
-                    <button class="admin-tab" onclick="switchAdminTab('references')">References</button>
-                    <button class="admin-tab" onclick="switchAdminTab('settings')">Settings</button>
-                </div>
-
-                <div class="admin-actions">
-                    <button class="btn-primary" onclick="showAddItemForm()">+ Add New</button>
-                </div>
-
-                <div id="adminList" style="margin-top: 1rem;"></div>
-
-                <div id="addItemForm"
-                    style="display:none; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-top: 1rem; border: 1px solid #ddd;">
-                    <h3 style="margin-bottom: 1rem;">Edit Item</h3>
-                    <input type="hidden" id="editItemId">
-                    <div id="dynamicFormFields" style="display: flex; flex-direction: column; gap: 10px;"></div>
-                    <div style="margin-top: 1rem; display: flex; gap: 10px;">
-                        <button class="btn-primary" onclick="saveItemToFirebase()">Save</button>
-                        <button class="btn-secondary" onclick="cancelAddItem()">Cancel</button>
-                    </div>
-                </div>
-
-                <button class="btn-secondary" onclick="auth.signOut()" style="margin-top: 2rem;">Logout</button>
-            </div>
-        </div>
-    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>

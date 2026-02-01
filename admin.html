@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Adarsh R</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* Admin Specific Overrides */
+        body {
+            background-color: #f0f2f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            width: 95%;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            flex-grow: 1;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 90%;
+            margin: auto;
+            background: white;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Re-style form elements for better dashboard visibility */
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-container);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .admin-tab {
+            padding: 10px 20px;
+            border: none;
+            background: var(--surface-variant);
+            color: var(--on-surface-variant);
+            border-radius: 99px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .admin-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Admin List Items */
+        .admin-project-item {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+        }
+
+        .admin-btn-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-move,
+        .btn-edit,
+        .btn-delete {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-move {
+            background: white;
+            border-color: #ddd;
+            color: #555;
+        }
+
+        .btn-edit {
+            background: #e3f2fd;
+            border-color: #bbdefb;
+            color: #1976d2;
+        }
+
+        .btn-delete {
+            background: #ffebee;
+            border-color: #ffcdd2;
+            color: #c62828;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN SECTION -->
+    <div id="adminLoginSection" style="display: flex; align-items: center; justify-content: center; min-height: 100vh;">
+        <div class="login-container">
+            <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Admin Portal</h2>
+            <p style="margin-bottom: 2rem; color: var(--on-surface-variant);">Secure Access Only</p>
+
+            <form onsubmit="event.preventDefault(); adminLogin();">
+                <input type="email" id="loginEmail" placeholder="admin@example.com" required>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                    Login to Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD CONTENT -->
+    <div id="adminContent" style="display: none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2>Dashboard</h2>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <span id="userEmailDisplay" style="font-size: 0.9rem; color: #666;"></span>
+                    <button class="btn-secondary" onclick="auth.signOut()">Logout</button>
+                </div>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('projects')">Projects</button>
+                <button class="admin-tab" onclick="switchAdminTab('experience')">Experience</button>
+                <button class="admin-tab" onclick="switchAdminTab('education')">Education</button>
+                <button class="admin-tab" onclick="switchAdminTab('skills')">Skills</button>
+                <button class="admin-tab" onclick="switchAdminTab('references')">References</button>
+                <button class="admin-tab" onclick="switchAdminTab('settings')">Settings</button>
+            </div>
+
+            <div class="admin-actions" style="margin-bottom: 1.5rem;">
+                <button class="btn-primary" onclick="showAddItemForm()">+ Add New Item</button>
+            </div>
+
+            <!-- List of Items -->
+            <div id="adminList"></div>
+
+            <!-- Add/Edit Form -->
+            <div id="addItemForm"
+                style="display:none; background: #fff; padding: 2rem; border-radius: 12px; margin-top: 2rem; border: 2px solid var(--surface-variant); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary);">Editor</h3>
+                <input type="hidden" id="editItemId">
+                <div id="dynamicFormFields"></div>
+
+                <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button class="btn-secondary" onclick="cancelAddItem()">Cancel</button>
+                    <button class="btn-primary" onclick="saveItemToFirebase()">Save Changes</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- Note: Storage SDK was not in original, but instructions mentioned handleImageUpload logic which typically uses it, 
+         however original script.js didn't have it either. I'll include it just in case for future. -->
+
+    <script src="admin.js"></script>
+
+</body>
+
+</html>
