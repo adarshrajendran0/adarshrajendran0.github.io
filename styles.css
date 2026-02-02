@@ -3,24 +3,54 @@
    =================================== */
 
 :root {
+    /* BASE PALETTE (Light Mode Default) */
     --primary: #1a5490;
     --primary-container: #d1e4ff;
     --on-primary: #ffffff;
     --on-primary-container: #001d36;
     --secondary: #535f70;
     --secondary-container: #d7e3f7;
+    --on-secondary-container: #1d192b;
+    /* Added for Light Mode */
     --tertiary: #6b5778;
     --tertiary-container: #f2daff;
-    --on-tertiary-container: #251431;
-    --surface: #f8f9fb;
-    --surface-variant: #dfe2eb;
-    --surface-container: #eceef3;
-    --on-surface: #191c20;
-    --on-surface-variant: #42474e;
-    --error: #ba1a1a;
-    --success: #006e1c;
-    --warning: #7d5700;
+    --on-tertiary-container: #250e30;
+    /* Added for Light Mode */
 
+    /* SEMANTIC BACKGROUNDS (Pastel Light) */
+    --bg-body: #f8f9fb;
+    --bg-hero: linear-gradient(135deg, #ffffff 0%, #e6f0ff 100%);
+    /* Subtle Blue Gradient */
+    --bg-experience: #e3f2fd;
+    /* Pastel Blue */
+    --bg-projects: #f3e5f5;
+    /* Pastel Purple */
+    --bg-skills: #e8f5e9;
+    /* Pastel Green */
+    --bg-contact: #fff3e0;
+    /* Pastel Orange */
+
+    /* TEXT COLORS */
+    --text-main: #191c20;
+    --text-secondary: #42474e;
+    --text-muted: #74777f;
+
+    /* CARD STYLES */
+    --card-bg: #ffffff;
+    --card-border: rgba(26, 84, 144, 0.15);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --card-shadow-hover: 0 12px 32px rgba(26, 84, 144, 0.2);
+    --card-shadow-hover: 0 12px 32px rgba(26, 84, 144, 0.2);
+    --modal-bg: rgba(255, 255, 255, 0.7);
+    /* Increased Transparency (was 0.75) */
+
+    /* UI ELEMENTS */
+    --navbar-bg: rgba(255, 255, 255, 0.9);
+    --navbar-border: rgba(0, 0, 0, 0.05);
+    --toggle-icon: #fdb813;
+    /* Sun Color */
+
+    /* SPACING & RADIUS */
     --space-xs: 0.5rem;
     --space-sm: 1rem;
     --space-md: 1.5rem;
@@ -34,15 +64,78 @@
     --radius-xl: 24px;
     --radius-full: 9999px;
 
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-
     --font-display: 'Epilogue', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
     --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-expressive: 500ms cubic-bezier(0.05, 0.7, 0.1, 1.0);
+}
+
+/* DARK MODE OVERRIDES */
+body.dark-mode {
+    /* DARK PALETTE (Tinted Pastels) */
+    --primary: #a0c9ff;
+    --primary-container: #003258;
+    --on-primary: #003258;
+    --primary-container: #003258;
+    --on-primary: #003258;
+    --on-primary: #003258;
+    --on-primary-container: #d1e4ff;
+
+    /* TERTIARY (Quotes/Special) */
+    --tertiary: #d7bce8;
+    --tertiary-container: #3a2d42;
+    /* Darker Purple for Dark Mode */
+    --on-tertiary-container: #f2daff;
+    /* Light Text */
+
+    /* SECONDARY (Badges/Pills) */
+    --secondary-container: #3a4857;
+    --on-secondary-container: #d7e3f7;
+
+    /* SEMANTIC BACKGROUNDS (Deep Tinted Dark) */
+    --bg-body: #0b0f14;
+    /* Very dark blue-grey */
+    --bg-hero: #0b0f14;
+    /* Match body for seamless look */
+    --bg-experience: #111418;
+    /* Darker Blue tint */
+    --bg-projects: #161016;
+    /* Darker Purple tint */
+    --bg-skills: #0f1410;
+    /* Darker Green tint */
+    --bg-contact: #16130f;
+    /* Darker Orange tint */
+
+    /* TEXT COLORS */
+    --text-main: #e2e2e2;
+    --text-secondary: #c4c6cf;
+    --text-muted: #8e9099;
+
+    /* CARD STYLES */
+    --card-bg: #1e2228;
+    /* Slightly lighter than bg */
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.6);
+    --modal-bg: rgba(30, 34, 41, 0.8);
+    /* Dark Glassy Background */
+
+    /* UI ELEMENTS */
+    --navbar-bg: rgba(11, 15, 20, 0.9);
+    --navbar-border: rgba(255, 255, 255, 0.05);
+    --toggle-icon: #ffffff;
+    /* Moon Color */
+
+    /* Global Overrides */
+    --on-surface: #e2e2e2;
+    --surface: #0b0f14;
+}
+
+body.dark-mode .visual-card {
+    background: rgba(40, 44, 52, 0.85);
+    /* Slightly transparent dark for glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* GLOBAL RESET & HIDDEN SCROLLBARS */
@@ -68,9 +161,11 @@ body {
 
 body {
     font-family: var(--font-display);
-    background: var(--surface);
-    color: var(--on-surface);
+    background: var(--bg-body);
+    color: var(--text-main);
     line-height: 1.6;
+    transition: background 0.3s ease, color 0.3s ease;
+    /* Smooth Theme Switch */
 }
 
 html {
@@ -100,11 +195,12 @@ html {
     top: 0;
     left: 0;
     right: 0;
+    padding: 1rem 2rem;
+    background: var(--navbar-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--navbar-border);
     z-index: 1000;
-    background: rgba(248, 249, 251, 0.65);
-    backdrop-filter: blur(15px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    transition: all var(--transition-base);
+    transition: background 0.3s ease, border-color 0.3s ease;
     height: 70px;
     display: flex;
     align-items: center;
@@ -206,11 +302,12 @@ html {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: var(--space-3xl) var(--space-lg);
-    padding-top: 100px;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #f0f4f8 0%, #d1e4ff 100%);
+    padding-top: 100px;
+    /* Account for fixed nav */
+    background: var(--bg-hero);
+    transition: background 0.3s ease;
 }
 
 .hero-container {
@@ -283,10 +380,12 @@ html {
     gap: var(--space-lg);
     margin-bottom: var(--space-xl);
     padding: var(--space-lg);
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--card-bg);
+    /* Use theme variable */
     backdrop-filter: blur(10px);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(26, 84, 144, 0.1);
+    border: 1px solid var(--card-border);
+    /* Use theme variable */
 }
 
 .stat-item {
@@ -329,7 +428,8 @@ html {
 
 .btn-primary {
     background: var(--primary);
-    color: white;
+    color: var(--on-primary);
+    /* Fix contrast in dark mode */
     box-shadow: var(--shadow-md);
 }
 
@@ -366,14 +466,15 @@ html {
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.85);
-    /* Glassy White */
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--card-bg);
+    /* Replaced rgba white */
     backdrop-filter: blur(12px);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow:
-        0 10px 30px -5px rgba(26, 84, 144, 0.15),
-        0 4px 6px -2px rgba(26, 84, 144, 0.05);
+    border: 1px solid var(--card-border);
+    /* Replaced rgba white border */
+    box-shadow: var(--card-shadow);
     /* Important: Allow JS to control movement smoothly */
     /* FIX: Explicitly prevent transform transitions to stop ghosting */
     transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0s;
@@ -496,7 +597,9 @@ section {
    TIMELINE (Experience)
    =================================== */
 .experience-section {
-    background: linear-gradient(to bottom, #ffffff 0%, #f0f4f8 100%);
+    background: var(--bg-experience);
+    padding: var(--space-3xl) var(--space-lg);
+    transition: background 0.3s ease;
 }
 
 .timeline {
@@ -513,7 +616,7 @@ section {
     top: 0;
     bottom: 0;
     width: 3px;
-    background: linear-gradient(180deg, var(--primary) 0%, var(--tertiary) 100%);
+    background: rgba(26, 84, 144, 0.2);
     border-radius: var(--radius-full);
 }
 
@@ -529,7 +632,7 @@ section {
     width: 1rem;
     height: 1rem;
     background: var(--primary);
-    border: 3px solid var(--surface);
+    border: 3px solid #f0f4f8;
     border-radius: 50%;
     box-shadow: 0 0 0 4px var(--primary-container);
 }
@@ -541,16 +644,17 @@ section {
 }
 
 .experience-card {
-    background: white;
+    background: var(--card-bg);
     padding: var(--space-xl);
     border-radius: var(--radius-xl);
-    border: 1px solid rgba(26, 84, 144, 0.1);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
     transition: all var(--transition-base);
     max-width: 850px;
 }
 
 .experience-card:hover {
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--card-shadow-hover);
     transform: translateY(-5px);
     border-color: var(--primary);
 }
@@ -610,7 +714,8 @@ section {
    GRIDS & BACKGROUNDS
    =================================== */
 .projects-section {
-    background: var(--surface);
+    background: var(--bg-projects);
+    transition: background 0.3s ease;
 }
 
 .projects-grid {
@@ -621,7 +726,8 @@ section {
 }
 
 .skills-section {
-    background: linear-gradient(135deg, #f8f9fb 0%, #fff0f0 100%);
+    background: var(--bg-skills);
+    transition: background 0.3s ease;
 }
 
 .skills-grid {
@@ -631,7 +737,9 @@ section {
 }
 
 .education-section {
-    background: linear-gradient(to bottom, #ffffff 0%, #eef2f6 100%);
+    background: var(--bg-experience);
+    /* Re-use Experience BG or separate if needed */
+    transition: background 0.3s ease;
 }
 
 .education-grid {
@@ -650,10 +758,10 @@ section {
    CARDS
    =================================== */
 .project-card {
-    background: white;
+    background: var(--card-bg);
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
-    border: 1px solid rgba(26, 84, 144, 0.1);
+    border: 1px solid var(--card-border);
     position: relative;
     overflow: hidden;
     cursor: pointer;
@@ -805,7 +913,8 @@ section {
 
 .project-card.highlight {
     grid-column: span 2;
-    background: linear-gradient(135deg, white 0%, #f0f4f8 100%);
+    background: var(--card-bg);
+    /* Remove hardcoded white gradient */
 }
 
 .project-card:hover {
@@ -843,7 +952,8 @@ section {
 }
 
 .project-status.private {
-    background-color: var(--tertiary) !important;
+    background-color: var(--tertiary-container) !important;
+    color: var(--on-tertiary-container) !important;
 }
 
 .project-title {
@@ -881,10 +991,10 @@ section {
 
 .skill-category,
 .education-card {
-    background: white;
+    background: var(--card-bg);
     padding: var(--space-lg);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(26, 84, 144, 0.2);
+    border: 1px solid var(--card-border);
     transition: all 0.2s;
 }
 
@@ -985,9 +1095,10 @@ section {
 }
 
 .modal-content {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--modal-bg);
+    /* Use separate transparent BG for blur */
     backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--card-border);
     border-radius: var(--radius-xl);
     width: min(95%, 850px);
     max-height: 85vh;
@@ -1073,7 +1184,10 @@ section {
 }
 
 .close-btn {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--surface-container);
+    /* Theme-aware background */
+    color: var(--on-surface);
+    /* Theme-aware text color */
     border: none;
     width: 40px;
     height: 40px;
@@ -1125,7 +1239,8 @@ section {
     font-size: 1rem;
     width: 100%;
     max-width: 300px;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--surface-container);
+    color: var(--on-surface);
 }
 
 /* ===================================
@@ -1143,9 +1258,11 @@ section {
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.5rem;
-    background: white;
+
+    background: var(--card-bg);
+    /* Replaced white */
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--card-border);
     text-decoration: none;
     transition: all 0.2s;
     flex-grow: 1;
@@ -1156,6 +1273,16 @@ section {
     transform: translateY(-3px);
     box-shadow: var(--shadow-md);
     border-color: var(--primary);
+}
+
+.contact-method div strong {
+    color: var(--text-main);
+    /* Ensure contrast in dark mode */
+}
+
+.contact-method div span {
+    color: var(--primary);
+    /* Use Primary for links */
 }
 
 .contact-method .material-symbols-rounded {
@@ -1170,19 +1297,9 @@ section {
     font-size: 1.4rem;
 }
 
-.contact-method div strong {
-    display: block;
-    color: var(--on-surface);
-    font-size: 0.9rem;
-}
 
-.contact-method div span {
-    color: var(--on-surface-variant);
-    font-size: 0.95rem;
-}
 
 .references-trigger {
-    background: white;
     padding: var(--space-md);
     border-radius: var(--radius-lg);
     display: inline-flex;
@@ -1191,7 +1308,8 @@ section {
     margin-bottom: var(--space-lg);
     cursor: pointer;
     transition: all 0.2s;
-    border: 1px solid rgba(26, 84, 144, 0.1);
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
     min-width: 350px;
 }
 
@@ -1225,11 +1343,13 @@ section {
 }
 
 .reference-card {
-    background: rgba(255, 255, 255, 0.6);
+    background: var(--card-bg);
+    /* Use theme variable */
     padding: var(--space-lg);
     border-radius: var(--radius-lg);
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--card-border);
+    /* Use theme variable */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     transition: all 0.2s;
     display: flex;
@@ -1239,7 +1359,9 @@ section {
 
 .reference-card:hover {
     transform: translateY(-4px);
-    background: white;
+    background: var(--card-bg);
+    /* Keep transparent/theme bg */
+    border-color: var(--primary);
     box-shadow: var(--shadow-lg);
 }
 
@@ -1249,9 +1371,9 @@ section {
     margin-bottom: var(--space-md);
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid white;
+    border: 3px solid var(--card-bg);
     box-shadow: var(--shadow-md);
-    background: #eee;
+    background: var(--surface-container);
 }
 
 .ref-avatar img {
@@ -1360,10 +1482,11 @@ section {
     max-width: 400px;
     margin: 0 auto;
     padding: 2rem;
-    background: white;
+    background: var(--card-bg);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     text-align: center;
+    border: 1px solid var(--card-border);
 }
 
 /* Styles for inputs inside the login section */

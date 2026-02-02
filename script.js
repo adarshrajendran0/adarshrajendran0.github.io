@@ -359,3 +359,38 @@ function initializeHeroParallax() {
 
     animate();
 }
+
+// =========================================
+// THEME TOGGLE LOGIC
+// =========================================
+function toggleTheme() {
+    const body = document.body;
+    const isDark = body.classList.toggle('dark-mode');
+
+    // Update Icon
+    updateThemeIcon(isDark);
+
+    // Save Preference
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
+
+function updateThemeIcon(isDark) {
+    const icon = document.getElementById('themeIcon');
+    if (icon) {
+        icon.textContent = isDark ? 'dark_mode' : 'light_mode';
+    }
+}
+
+// Load Theme on Start
+(function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.body.classList.add('dark-mode');
+        // Wait for DOM to update icon
+        document.addEventListener('DOMContentLoaded', () => updateThemeIcon(true));
+    } else {
+        document.addEventListener('DOMContentLoaded', () => updateThemeIcon(false));
+    }
+})();
