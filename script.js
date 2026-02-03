@@ -15,7 +15,7 @@ const auth = firebase.auth();
 let isPrivateUnlocked = false;
 
 // CACHE includes 'settings' for Resume URL
-let dataCache = { projects: [], experience: [], education: [], skills: [], references: [], settings: [] };
+let dataCache = { projects: [], experience: [], education: [], skills: [], references: [], settings: [], personal: [] };
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeScrollAnimations();
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeHeroParallax();
 
     // FETCH ALL COLLECTIONS (Including Settings)
-    ['projects', 'experience', 'education', 'skills', 'references', 'settings'].forEach(col => fetchCollection(col));
+    ['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal'].forEach(col => fetchCollection(col));
 
     // SAFETY NET: Hide loader after 1.5s max to prevent infinite spinner
     setTimeout(() => {
@@ -92,7 +92,7 @@ function convertGoogleDriveLink(url) {
 }
 
 // LOADER LOGIC
-let loadingCollections = new Set(['projects', 'experience', 'education', 'skills', 'references', 'settings']);
+let loadingCollections = new Set(['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal']);
 function hideGlobalLoader() {
     const loader = document.getElementById('globalLoader');
     if (loader) loader.style.opacity = '0';
@@ -125,6 +125,9 @@ function fetchCollection(collectionName) {
         if (collectionName === 'settings') {
             renderSettings(); // Update Resume
             renderHero(); // Update Hero
+        }
+        if (collectionName === 'personal') {
+            renderPersonalTabs(); // Initial load
         }
 
         // Remove from loading set
@@ -264,6 +267,132 @@ function initializeSmoothScroll() {
 function initializeScrollAnimations() { const obs = new IntersectionObserver(e => e.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'translateY(0)'; } })); document.querySelectorAll('[data-animate]').forEach(el => { el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; el.style.transition = 'opacity 0.6s ease, transform 0.6s ease'; obs.observe(el); }); }
 function toggleMobileMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
 function checkVisitorLock() { }
+
+// ==========================================
+// PERSONAL INTERESTS (MINI-BLOG) LOGIC
+// ==========================================
+
+let activePersonalCategory = 'All';
+
+function renderPersonalTabs() {
+    const container = document.getElementById('personalTabs');
+    if (!container) return;
+
+    // 1. Get Unique Categories
+    const categories = new Set(['All']);
+    dataCache.personal.forEach(item => {
+        if (item.category) categories.add(item.category);
+    });
+
+    // 2. Render Tabs
+    container.innerHTML = '';
+    categories.forEach(cat => {
+        const btn = document.createElement('div');
+        btn.className = `category-tab ${cat === activePersonalCategory ? 'active' : ''}`;
+        btn.textContent = cat;
+        btn.onclick = () => {
+            activePersonalCategory = cat;
+            renderPersonalTabs(); // Re-render to update active class
+            renderPersonalGrid();
+        };
+        container.appendChild(btn);
+    });
+
+    // Initial Grid Render
+    renderPersonalGrid();
+}
+
+function renderPersonalGrid() {
+    const container = document.getElementById('personalGrid');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    const items = activePersonalCategory === 'All'
+        ? dataCache.personal
+        : dataCache.personal.filter(i => i.category === activePersonalCategory);
+
+    if (items.length === 0) {
+        container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--on-surface-variant);">No items found in this category.</p>';
+        return;
+    }
+
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'personal-card';
+        card.onclick = () => openPersonalDetail(item);
+
+        const thumbUrl = item.thumbnail || convertGoogleDriveLink(item.image) || ''; // Fallback checking 'image' property just in case
+        const thumbHTML = thumbUrl ? `<img src="${thumbUrl}" class="personal-thumb" loading="lazy">` : `<div class="personal-thumb" style="background:var(--tertiary-container); display:flex; align-items:center; justify-content:center; color:var(--primary); font-weight:bold;">${item.category || 'Blog'}</div>`;
+
+        card.innerHTML = `
+            ${thumbHTML}
+            <div class="personal-info">
+                <div class="personal-category-badge">${item.category}</div>
+                <div class="personal-title">${item.title}</div>
+                <div class="personal-summary">${item.summary || ''}</div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function openPersonalModal() {
+    renderPersonalTabs(); // Ensure fresh render
+    openModal('personalModal');
+}
+
+function closePersonalModal() {
+    closeModal('personalModal');
+}
+
+function openPersonalDetail(item) {
+    const container = document.getElementById('personalDynamicContent');
+    const modal = document.getElementById('personalDetailModal');
+
+    // BUILD CONTENT
+    let html = '';
+
+    // Header Image
+    if (item.thumbnail) {
+        html += `<img src="${item.thumbnail}" class="blog-header-image">`;
+    }
+
+    html += `<div class="blog-content">
+                <h2 class="blog-title">${item.title}</h2>
+                <div class="blog-meta">
+                    <span class="material-symbols-rounded" style="font-size:1.1rem;">category</span> ${item.category}
+                </div>`;
+
+    // Dynamic Blocks
+    if (item.contentBlocks && Array.isArray(item.contentBlocks)) {
+        item.contentBlocks.forEach(block => {
+            if (block.type === 'header') {
+                html += `<h3 class="blog-block-header">${block.text}</h3>`;
+            } else if (block.type === 'paragraph') {
+                html += `<p class="blog-block-paragraph">${block.text}</p>`;
+            } else if (block.type === 'quote') {
+                html += `<blockquote class="blog-block-quote">${block.text}</blockquote>`;
+            } else if (block.type === 'image') {
+                // Check if text is a URL
+                const url = convertGoogleDriveLink(block.text);
+                html += `<img src="${url}" class="blog-block-image" loading="lazy">`;
+            }
+        });
+    } else {
+        // Fallback for simple description if no blocks
+        if (item.description) html += `<p class="blog-block-paragraph">${item.description}</p>`;
+    }
+
+    html += `</div>`; // Close blog-content
+
+    container.innerHTML = html;
+    modal.classList.add('active');
+}
+
+function closePersonalDetail() {
+    closeModal('personalDetailModal');
+}
 
 // CAROUSEL LOGIC
 let currentSlideIndex = 0;

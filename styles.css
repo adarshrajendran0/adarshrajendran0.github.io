@@ -1813,3 +1813,176 @@ body.dark-mode .spinner {
     border: 5px solid rgba(255, 255, 255, 0.1);
     border-top: 5px solid var(--primary);
 }
+
+/* =================================== 
+   PERSONAL INTERESTS (MINI-BLOG)
+   =================================== */
+
+/* Swipeable Tabs */
+.category-tabs-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--surface-variant);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scroll on mobile */
+}
+
+.category-tab {
+    display: inline-block;
+    padding: 8px 20px;
+    margin-right: 10px;
+    border-radius: 50px;
+    border: 1px solid var(--surface-variant);
+    background: var(--surface-container);
+    color: var(--on-surface-variant);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.category-tab:hover {
+    background: var(--surface-variant);
+}
+
+.category-tab.active {
+    background: var(--primary);
+    color: var(--on-primary);
+    border-color: var(--primary);
+}
+
+/* Personal Grid */
+.personal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    /* Slightly wider for better card fitting */
+    gap: 20px;
+}
+
+.personal-card {
+    background: var(--surface-container);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--card-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.personal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.personal-thumb {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.personal-info {
+    padding: 15px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.personal-category-badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.personal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--on-surface);
+}
+
+.personal-summary {
+    font-size: 0.9rem;
+    color: var(--on-surface-variant);
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+/* Detail Content Typography */
+.blog-header-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+.blog-content {
+    padding: 30px;
+}
+
+@media (max-width: 768px) {
+    .blog-header-image {
+        height: 200px;
+    }
+
+    .blog-content {
+        padding: 20px;
+    }
+}
+
+.blog-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: var(--primary);
+    line-height: 1.2;
+}
+
+.blog-meta {
+    font-size: 0.9rem;
+    color: var(--on-surface-variant);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--surface-variant);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Dynamic Blocks */
+.blog-block-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--on-surface);
+}
+
+.blog-block-paragraph {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--on-surface);
+}
+
+.blog-block-quote {
+    border-left: 4px solid var(--primary);
+    margin: 2rem 0;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--secondary);
+    background: var(--surface-variant);
+    padding: 20px;
+    border-radius: 0 12px 12px 0;
+}
+
+.blog-block-image {
+    width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
+    box-shadow: var(--shadow-sm);
+}

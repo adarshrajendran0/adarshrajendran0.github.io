@@ -17,10 +17,8 @@ const storage = firebase.storage();
 
 // 2. State & Cache
 let currentAdminTab = 'projects';
-let dataCache = { projects: [], experience: [], education: [], skills: [], references: [], settings: [] };
-// Cropper State
-let cropper = null;
-let currentCropTarget = null; // 'references' or similar
+let dataCache = { projects: [], experience: [], education: [], skills: [], references: [], settings: [], personal: [] };
+let currentCropTarget = null; // 'references', 'personal', etc.
 let croppedBlob = null;
 
 // 3. Initialization
@@ -45,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (userEmailDisplay) userEmailDisplay.textContent = user.email;
 
             // Start Fetching Data ONLY when logged in
-            ['projects', 'experience', 'education', 'skills', 'references', 'settings'].forEach(col => fetchCollection(col));
+            ['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal'].forEach(col => fetchCollection(col));
             switchAdminTab(currentAdminTab);
         } else {
             if (loginSection) loginSection.style.display = 'flex'; // Flex for centering
@@ -332,6 +330,45 @@ function generateFormFields(type, data = {}) {
                                                                                                                                 <input type="text" id="inp_linkedin" placeholder="LinkedIn URL" value="${v('linkedin')}">
                                                                                                                                     <input type="text" id="inp_email" placeholder="Email Address" value="${v('email')}">`;
 
+    if (type === 'personal') {
+        const blocksHtml = (data.contentBlocks || []).map(b => `
+            <div class="block-item" data-type="${b.type}" style="background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${b.type}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
+                </div>
+                <textarea class="form-input block-content" rows="${b.type === 'header' ? 1 : 3}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">${b.text}</textarea>
+            </div>
+        `).join('');
+
+        return `
+            <input type="text" id="inp_perCategory" placeholder="Category (e.g. Travel, Photography)" value="${v('category')}">
+            <input type="text" id="inp_perTitle" placeholder="Card Title" value="${v('title')}">
+            <input type="text" id="inp_perSummary" placeholder="Short Summary" value="${v('summary')}">
+            
+            <label style="display:block;margin-top:10px;margin-bottom:5px;font-weight:600;">Thumbnail Image</label>
+            <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+                ${v('thumbnail') ? `<img src="${v('thumbnail')}" style="width:50px; height:50px; border-radius:6px; object-fit:cover;">` : ''}
+                <input type="text" id="inp_perThumbnail" placeholder="Image URL" value="${v('thumbnail')}" style="flex-grow:1; margin:0;" readonly>
+            </div>
+             <button class="btn-secondary" onclick="document.getElementById('inp_per_file').click()" style="margin-bottom:10px; font-size:0.8rem;">Upload & Crop Thumbnail</button>
+             <input type="file" id="inp_per_file" accept="image/*" style="display:none;" onchange="startCrop(this)">
+             <div id="crop_preview_msg" style="color:green; font-weight:bold; font-size:0.8rem; display:none;">Thumbnail Cropped!</div>
+
+            <hr style="margin:20px 0; border:0; border-top:1px solid #ddd;">
+            <h4 style="margin-bottom:10px;">Deep Dive Content</h4>
+            <div id="contentBlocksContainer" style="margin-bottom:15px; max-height:300px; overflow-y:auto; border:1px dashed #ccc; padding:10px;">
+                ${blocksHtml}
+            </div>
+            <div class="builder-controls" style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="button" class="btn-secondary" onclick="addContentBlock('header')">+ Header</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+            </div>
+        `;
+    }
+
     return '';
 }
 
@@ -494,6 +531,36 @@ async function saveItemToFirebase() {
         // Clear blob
         croppedBlob = null;
     }
+    else if (currentAdminTab === 'personal') {
+        data.category = document.getElementById('inp_perCategory').value;
+        data.title = document.getElementById('inp_perTitle').value;
+        data.summary = document.getElementById('inp_perSummary').value;
+        if (!data.title) { alert("Title is required"); return; }
+
+        if (croppedBlob) {
+            const saveBtn = document.querySelector('#adminModal .btn-primary');
+            saveBtn.innerText = "Uploading Thumbnail...";
+            saveBtn.disabled = true;
+            try {
+                const uniqueName = `personal/${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}.jpg`;
+                const url = await uploadFileToStorage(croppedBlob, uniqueName);
+                data.thumbnail = url;
+            } catch (e) {
+                alert("Upload Failed: " + e.message);
+                saveBtn.innerText = "Save Changes";
+                saveBtn.disabled = false;
+                return;
+            }
+        } else {
+            data.thumbnail = document.getElementById('inp_perThumbnail').value;
+        }
+
+        // Helper to get blocks
+        data.contentBlocks = getBlocksFromUI();
+
+        // Clear blob
+        croppedBlob = null;
+    }
 
     if (docId) {
         db.collection(currentAdminTab).doc(docId).update(data)
@@ -626,11 +693,48 @@ function finishCrop() {
     if (cropper) {
         cropper.getCroppedCanvas({
             width: 300,
-            height: 300 // Reasonable size for avatar
+            height: 300
         }).toBlob((blob) => {
             croppedBlob = blob;
             document.getElementById('crop_preview_msg').style.display = 'block';
             document.getElementById('cropperModal').style.display = 'none';
         });
     }
+}
+
+// ==========================================
+// NEW: CONTENT BUILDER HELPERS
+// ==========================================
+
+function addContentBlock(type, value = '') {
+    const container = document.getElementById('contentBlocksContainer');
+    const div = document.createElement('div');
+    div.className = 'block-item';
+    div.dataset.type = type;
+    div.style.cssText = "background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;";
+
+    let rows = 3;
+    if (type === 'header' || type === 'image') rows = 1;
+
+    div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+            <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${type}</span>
+            <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
+        </div>
+        <textarea class="form-input block-content" rows="${rows}" placeholder="Enter ${type} content..." style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">${value}</textarea>
+    `;
+    container.appendChild(div);
+    // Scroll to bottom
+    container.scrollTop = container.scrollHeight;
+}
+
+function getBlocksFromUI() {
+    const blocks = [];
+    document.querySelectorAll('.block-item').forEach(div => {
+        blocks.push({
+            type: div.dataset.type,
+            text: div.querySelector('.block-content').value
+        });
+    });
+    return blocks;
 }
