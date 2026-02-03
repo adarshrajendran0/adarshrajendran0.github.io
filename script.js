@@ -226,11 +226,20 @@ function createProjectCard(project, isPrivate) {
 // [Restored Helper Functions]
 // [Restored Helper Functions]
 function initializeNavigation() {
-    document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => {
-        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-        l.classList.add('active');
-        // Auto-close mobile menu
-        document.querySelector('.nav-links').classList.remove('active');
+    const navLinksContainer = document.querySelector('.nav-links');
+    const links = document.querySelectorAll('.nav-link, .nav-link-special');
+
+    links.forEach(l => l.addEventListener('click', () => {
+        // Active State Logic
+        if (l.classList.contains('nav-link')) {
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            l.classList.add('active');
+        }
+
+        // Auto-close mobile menu (Robust Fix)
+        if (navLinksContainer.classList.contains('active')) {
+            navLinksContainer.classList.remove('active');
+        }
     }));
 }
 function initializeSmoothScroll() {
