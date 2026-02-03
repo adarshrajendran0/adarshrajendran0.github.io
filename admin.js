@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 4. Auth Functions
-// 4. Auth Functions
 function adminLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider)
@@ -181,49 +180,68 @@ function editItem(docId) {
     document.getElementById('adminModal').style.display = 'flex';
     document.getElementById('editItemId').value = docId;
     document.getElementById('dynamicFormFields').innerHTML = generateFormFields(currentAdminTab, item);
-
-    // Populate Images for Projects NOT NEEDED HERE anymore as it is handled in generateFormFields
-    // The "Initial Image Input" logic is removed because we use a File Picker now.
 }
-
-// DYNAMIC IMAGE FIELDS LOGIC (Replaced by File Picker)
 
 function generateFormFields(type, data = {}) {
     const v = (key) => data[key] || '';
 
     if (type === 'settings') {
-        return `<label style="display:block;margin-bottom:5px;">Resume URL</label>
+        return `<h4 style="margin-bottom:10px; color:#333;">Resume</h4>
                 <div style="display:flex; gap:10px; margin-bottom:10px;">
-                    <input type="text" id="inp_resumeUrl" placeholder="https://..." value="${v('resumeUrl')}" style="flex-grow:1; margin:0;">
-                    <button class="btn-secondary" onclick="document.getElementById('inp_resume_file').click()">Upload</button>
-                    <input type="file" id="inp_resume_file" accept=".pdf,.doc,.docx" style="display:none;" onchange="uploadResume(this)">
+                    <label style="flex-grow:1;">
+                        <span style="font-size:0.8rem; display:block; margin-bottom:4px;">Resume URL</span>
+                        <input type="text" id="inp_resumeUrl" value="${v('resumeUrl')}" style="width:100%; margin:0;">
+                    </label>
+                    <div style="align-self: flex-end;">
+                        <button class="btn-secondary" onclick="document.getElementById('inp_resume_file').click()">Upload New</button>
+                        <input type="file" id="inp_resume_file" accept=".pdf,.doc,.docx" style="display:none;" onchange="uploadResume(this)">
+                    </div>
                 </div>
+
+        <hr style="margin:20px 0; border:0; border-top:1px solid #ddd;">
+        
+        <h4 style="margin-bottom:10px; color:#333;">Visitor Access (Private Portfolio)</h4>
+        <div style="background:var(--tertiary-container); padding:15px; border-radius:8px; margin-bottom:15px;">
+            <p style="margin:0 0 10px 0; font-size:0.9rem; color:var(--on-tertiary-container);">
+                Status: <strong>${data.visitorPasswordHash ? '✅ Password Set' : '⚠️ Not Set (Default Active)'}</strong>
+            </p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <label>
+                    <span style="font-size:0.8rem; display:block; margin-bottom:4px;">New Password (min 8 chars)</span>
+                    <input type="password" id="inp_visitorPwd" placeholder="Leave empty to keep current">
+                </label>
+                <label>
+                    <span style="font-size:0.8rem; display:block; margin-bottom:4px;">Confirm Password</span>
+                    <input type="password" id="inp_visitorPwdConfirm" placeholder="Retype to confirm">
+                </label>
+            </div>
+        </div>
 
         <hr style="margin:20px 0; border:0; border-top:1px solid #ddd;">
         
         <h4 style="margin-bottom:10px; color:#333;">Hero Section (Home)</h4>
         
         <label style="display:block;margin-bottom:5px;">Badge Text</label>
-        <input type="text" id="inp_hero_badge" placeholder="Available for R&D Roles" value="${v('heroBadge')}">
+        <input type="text" id="inp_heroBadge" placeholder="Available for R&D Roles" value="${v('heroBadge')}">
 
-        <label style="display:block;margin-bottom:5px;">Title (Use &lt;br&gt; for line breaks)</label>
-        <input type="text" id="inp_hero_title" placeholder="Engineering at the <br> Intersection of Innovation." value="${v('heroTitle')}">
+        <label style="display:block;margin-bottom:5px;">Title</label>
+        <textarea id="inp_heroTitle" rows="2" placeholder="Title with <br> tags">${v('heroTitle')}</textarea>
 
         <label style="display:block;margin-bottom:5px;">Description</label>
-        <textarea id="inp_hero_desc" rows="3" placeholder="Mechanical R&D Engineer...">${v('heroDesc')}</textarea>
+        <textarea id="inp_heroDesc" rows="3" placeholder="Mechanical R&D Engineer...">${v('heroDesc')}</textarea>
 
         <label style="display:block;margin-bottom:5px; font-weight:600;">Stats</label>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:5px;">
-            <input type="text" id="inp_stat1_num" placeholder="3+" value="${v('stat1Num')}">
-            <input type="text" id="inp_stat1_label" placeholder="Years R&D" value="${v('stat1Label')}">
+            <input type="text" id="inp_stat1Num" placeholder="3+" value="${v('stat1Num')}">
+            <input type="text" id="inp_stat1Label" placeholder="Years R&D" value="${v('stat1Label')}">
         </div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:5px;">
-            <input type="text" id="inp_stat2_num" placeholder="AIR 2" value="${v('stat2Num')}">
-            <input type="text" id="inp_stat2_label" placeholder="National Rank" value="${v('stat2Label')}">
+            <input type="text" id="inp_stat2Num" placeholder="AIR 2" value="${v('stat2Num')}">
+            <input type="text" id="inp_stat2Label" placeholder="National Rank" value="${v('stat2Label')}">
         </div>
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            <input type="text" id="inp_stat3_num" placeholder="10+" value="${v('stat3Num')}">
-            <input type="text" id="inp_stat3_label" placeholder="Projects" value="${v('stat3Label')}">
+            <input type="text" id="inp_stat3Num" placeholder="10+" value="${v('stat3Num')}">
+            <input type="text" id="inp_stat3Label" placeholder="Projects" value="${v('stat3Label')}">
         </div>`;
     }
 
@@ -305,6 +323,15 @@ function generateFormFields(type, data = {}) {
     return '';
 }
 
+// HASHING UTILITY
+async function hashPassword(password) {
+    const SALT = "adarsh-portfolio-2025"; // Must match script.js
+    const msgBuffer = new TextEncoder().encode(password + SALT);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 // 7. CRUD Operations
 async function saveItemToFirebase() {
     const docId = document.getElementById('editItemId').value;
@@ -321,21 +348,42 @@ async function saveItemToFirebase() {
         const resumeUrl = document.getElementById('inp_resumeUrl').value;
 
         const heroData = {
-            heroBadge: document.getElementById('inp_hero_badge').value,
-            heroTitle: document.getElementById('inp_hero_title').value,
-            heroDesc: document.getElementById('inp_hero_desc').value,
-            stat1Num: document.getElementById('inp_stat1_num').value,
-            stat1Label: document.getElementById('inp_stat1_label').value,
-            stat2Num: document.getElementById('inp_stat2_num').value,
-            stat2Label: document.getElementById('inp_stat2_label').value,
-            stat3Num: document.getElementById('inp_stat3_num').value,
-            stat3Label: document.getElementById('inp_stat3_label').value,
-            resumeUrl: resumeUrl // Keep resume URL in the same config doc or separate?
-            // Better to keep all 'settings' in one doc for simplicity
+            heroBadge: document.getElementById('inp_heroBadge').value,
+            heroTitle: document.getElementById('inp_heroTitle').value,
+            heroDesc: document.getElementById('inp_heroDesc').value,
+            stat1Num: document.getElementById('inp_stat1Num').value,
+            stat1Label: document.getElementById('inp_stat1Label').value,
+            stat2Num: document.getElementById('inp_stat2Num').value,
+            stat2Label: document.getElementById('inp_stat2Label').value,
+            stat3Num: document.getElementById('inp_stat3Num').value,
+            stat3Label: document.getElementById('inp_stat3Label').value,
+            resumeUrl: resumeUrl
         };
 
+        // PASSWORD LOGIC
+        const newPwd = document.getElementById('inp_visitorPwd').value;
+        const confirmPwd = document.getElementById('inp_visitorPwdConfirm').value;
+
+        if (newPwd) {
+            if (newPwd.length < 8) {
+                alert("Password must be at least 8 characters.");
+                return;
+            }
+            if (newPwd !== confirmPwd) {
+                alert("Passwords do not match.");
+                return;
+            }
+            try {
+                heroData.visitorPasswordHash = await hashPassword(newPwd);
+            } catch (e) {
+                alert("Hashing failed. Check HTTPS.");
+                return;
+            }
+        }
+
         db.collection('settings').doc('config').set(heroData, { merge: true })
-            .then(() => { alert("Settings Saved!"); });
+            .then(() => { alert("Settings Updated!"); })
+            .catch(err => alert("Error: " + err.message));
         return;
     }
 
@@ -452,7 +500,7 @@ async function saveItemToFirebase() {
     }
 }
 
-function deleteItem(docId) {
+async function deleteItem(docId) {
     if (confirm("Are you sure you want to delete this item?")) {
         db.collection(currentAdminTab).doc(docId).delete()
             .catch(err => alert("Error deleting: " + err.message));
