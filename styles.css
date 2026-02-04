@@ -2303,3 +2303,92 @@ body.dark-mode .spinner {
     white-space: pre-wrap;
     /* Preserve line breaks */
 }
+
+/* =========================================
+   OPTIMIZED EXPERIENCE CARD LAYOUT
+   ========================================= */
+
+.experience-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    /* Reduced from 2.5rem to save space */
+    box-shadow: var(--card-shadow);
+    transition: var(--transition-base);
+    margin-bottom: 0;
+    /* Let timeline item handle spacing */
+}
+
+.experience-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+    border-color: var(--primary);
+}
+
+.exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px dashed var(--surface-variant);
+    flex-wrap: wrap;
+    /* Wrap on small mobile */
+    gap: 0.5rem;
+}
+
+.exp-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.exp-company {
+    color: var(--primary);
+    font-weight: 500;
+    margin: 0.2rem 0 0 0;
+    font-size: 1rem;
+}
+
+.exp-period {
+    background: var(--surface-container);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+
+.exp-highlights {
+    display: grid;
+    /* Two Columns on Desktop to reduce vertical whitespace */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.8rem 1.5rem;
+    /* Row Gap, Col Gap */
+}
+
+.highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 0.25rem 0;
+}
+
+.highlight-item span {
+    /* Arrow Icon */
+    font-size: 1.1rem;
+    color: var(--tertiary);
+    margin-top: 2px;
+    /* Visual alignment */
+    flex-shrink: 0;
+}
