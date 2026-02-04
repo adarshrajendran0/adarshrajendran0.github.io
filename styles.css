@@ -2004,7 +2004,7 @@ body.dark-mode .spinner {
     height: 100%;
     overflow-y: auto;
     position: relative;
-    background: var(--bg-body);
+    /* background: var(--bg-body); REMOVED to allow modal transparency */
 }
 
 /* Tabs */
@@ -2050,7 +2050,12 @@ body.dark-mode .spinner {
 /* Image - Rounded Rectangle & Bigger */
 .card-image {
     width: 150px;
-    height: 150px;
+    height: auto;
+    /* Allow free crop height */
+    min-height: 100px;
+    /* Min height for consistency */
+    max-height: 250px;
+    /* Cap height to prevent super tall images */
     border-radius: 20px;
     /* Soft rounded rect */
     margin-bottom: 20px;
@@ -2058,12 +2063,19 @@ body.dark-mode .spinner {
     flex-shrink: 0;
     box-shadow: var(--shadow-md);
     background: var(--tertiary-container);
+    display: flex;
+    /* Centers placeholder if needed */
+    align-items: center;
+    justify-content: center;
 }
 
 .card-image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    /* Natural Ratio */
+    display: block;
+    object-fit: contain;
+    /* Shows full crop */
     transition: transform 0.5s ease;
 }
 
@@ -2126,7 +2138,10 @@ body.dark-mode .spinner {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-body);
+    background: var(--modal-bg);
+    /* Use theme transparent bg */
+    backdrop-filter: blur(25px);
+    /* Strong blur to hide underlying grid */
     z-index: 20;
     padding: 30px;
     transform: translateX(100%);
@@ -2158,12 +2173,18 @@ body.dark-mode .spinner {
 }
 
 .reader-hero-img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 16px;
-    margin-bottom: 30px;
+    width: 150px;
+    /* Match card size */
+    height: auto;
+    /* Natural Ratio */
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 20px;
+    /* Match card radius */
+    margin: 0 auto 30px auto;
+    /* Center image */
     box-shadow: var(--shadow-md);
+    display: block;
 }
 
 .reader-header {
