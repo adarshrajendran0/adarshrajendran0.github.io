@@ -315,9 +315,17 @@
                     <div style="height: 400px; background: #333; margin-bottom: 1rem;">
                         <img id="cropperImage" src="" style="max-width: 100%; display: block;">
                     </div>
-                    <div class="admin-modal-actions">
-                        <button class="btn-secondary" onclick="cancelCrop()">Cancel</button>
-                        <button class="btn-primary" onclick="finishCrop()">Crop & Use</button>
+                    <div class="admin-modal-actions" style="justify-content: space-between;">
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" class="btn-secondary" onclick="setCropRatio(1)"
+                                title="Square Crop">1:1</button>
+                            <button type="button" class="btn-secondary" onclick="setCropRatio(NaN)"
+                                title="Free Crop">Free</button>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn-secondary" onclick="cancelCrop()">Cancel</button>
+                            <button class="btn-primary" onclick="finishCrop()">Crop & Use</button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -675,7 +675,7 @@ function startCrop(input) {
 
             if (cropper) cropper.destroy();
             cropper = new Cropper(img, {
-                aspectRatio: 1, // Square for avatar
+                aspectRatio: 1, // Default to Square
                 viewMode: 1
             });
         }
@@ -686,57 +686,78 @@ function startCrop(input) {
 function cancelCrop() {
     document.getElementById('cropperModal').style.display = 'none';
     if (cropper) cropper.destroy();
-    document.getElementById('inp_ref_file').value = '';
-    if (document.getElementById('inp_per_file')) document.getElementById('inp_per_file').value = ''; // Reset Personal Input
+
+    // Safely reset inputs if they exist
+    const refInput = document.getElementById('inp_ref_file');
+    if (refInput) refInput.value = '';
+
+    const perInput = document.getElementById('inp_per_file');
+    if (perInput) perInput.value = '';
+
     croppedBlob = null;
 }
 
 function finishCrop() {
     if (cropper) {
-        cropper.getCroppedCanvas({
-            width: 300,
-            height: 300
-        }).toBlob((blob) => {
-            croppedBlob = blob;
-            document.getElementById('crop_preview_msg').style.display = 'block';
-            document.getElementById('cropperModal').style.display = 'none';
-        });
-    }
-}
+        function setCropRatio(ratio) {
+            if (cropper) {
+                cropper.setAspectRatio(ratio);
+            }
+        }
 
-// ==========================================
-// NEW: CONTENT BUILDER HELPERS
-// ==========================================
+        function finishCrop() {
+            if (cropper) {
+                // If Free crop, don't force specific width/height, just max logic or natural
+                // But for consistency let's limit max dimension if needed, or just let it be.
+                // For avatars 300x300 is good. For blog thumbnails, maybe 16:9 or similar.
 
-function addContentBlock(type, value = '') {
-    const container = document.getElementById('contentBlocksContainer');
-    const div = document.createElement('div');
-    div.className = 'block-item';
-    div.dataset.type = type;
-    div.style.cssText = "background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;";
+                // Let's use flexible export
+                cropper.getCroppedCanvas({
+                    // No forced width/height here means it outputs the cropped area at natural resolution
+                    // We can throttle max width if needed
+                    maxWidth: 800,
+                    maxHeight: 800
+                }).toBlob((blob) => {
+                    croppedBlob = blob;
+                    document.getElementById('crop_preview_msg').style.display = 'block';
+                    document.getElementById('cropperModal').style.display = 'none';
+                }, 'image/jpeg', 0.9);
+            }
+        }
 
-    let rows = 3;
-    if (type === 'header' || type === 'image') rows = 1;
+        // ==========================================
+        // NEW: CONTENT BUILDER HELPERS
+        // ==========================================
 
-    div.innerHTML = `
+        function addContentBlock(type, value = '') {
+            const container = document.getElementById('contentBlocksContainer');
+            const div = document.createElement('div');
+            div.className = 'block-item';
+            div.dataset.type = type;
+            div.style.cssText = "background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;";
+
+            let rows = 3;
+            if (type === 'header' || type === 'image') rows = 1;
+
+            div.innerHTML = `
         <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
             <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${type}</span>
             <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
         </div>
         <input class="form-input block-content" placeholder="Enter ${type} content..." value="${value}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">
     `;
-    container.appendChild(div);
-    // Scroll to bottom
-    container.scrollTop = container.scrollHeight;
-}
+            container.appendChild(div);
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
 
-function getBlocksFromUI() {
-    const blocks = [];
-    document.querySelectorAll('.block-item').forEach(div => {
-        blocks.push({
-            type: div.dataset.type,
-            text: div.querySelector('.block-content').value
-        });
-    });
-    return blocks;
-}
+        function getBlocksFromUI() {
+            const blocks = [];
+            document.querySelectorAll('.block-item').forEach(div => {
+                blocks.push({
+                    type: div.dataset.type,
+                    text: div.querySelector('.block-content').value
+                });
+            });
+            return blocks;
+        }
