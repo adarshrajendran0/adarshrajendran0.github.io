@@ -1248,7 +1248,8 @@ section {
 .detail-body,
 .private-projects-content,
 .admin-content {
-    padding: 0 2.5rem 2.5rem 2.5rem !important;
+    padding: 10px 2.5rem 2.5rem 2.5rem !important;
+    /* Added top padding for hover space */
     overflow-y: auto;
     flex-grow: 1;
     overscroll-behavior-y: contain;

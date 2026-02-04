@@ -350,7 +350,7 @@ function renderReferencesModal() {
 function createProjectCard(project, isPrivate) {
     const card = document.createElement('div');
     card.className = `project-card ${project.highlight ? 'highlight' : ''}`;
-    card.onclick = () => openProjectDetails(project);
+    card.onclick = (e) => openProjectDetails(project, e.currentTarget);
     card.innerHTML = `<div class="project-header"><div class="project-icon"><span class="material-symbols-rounded">${project.icon || 'work'}</span></div><div class="project-status ${isPrivate ? 'private' : ''}">${project.status}</div></div><div><h3 class="project-title">${project.title}</h3><p class="project-description">${project.description}</p><div class="project-tags">${(project.tags || []).slice(0, 3).map(t => `<span class="project-tag">${t}</span>`).join('')}</div></div>`;
     return card;
 }
@@ -395,7 +395,7 @@ function checkVisitorLock() { }
 let currentSlideIndex = 0;
 let currentProjectImages = [];
 
-function openProjectDetails(p) {
+function openProjectDetails(p, trigger = null) {
     const m = document.getElementById('projectDetailModal');
     document.getElementById('detailTitle').textContent = p.title;
     document.getElementById('detailIcon').textContent = p.icon || 'work';
@@ -434,7 +434,7 @@ function openProjectDetails(p) {
         carouselContainer.innerHTML = `<div class="carousel">${slidesHTML}${navHTML}</div>`;
     }
 
-    openModal('projectDetailModal');
+    openModal('projectDetailModal', trigger);
 }
 
 function moveSlide(n) {
@@ -461,7 +461,7 @@ function showSlide(n) {
 }
 
 function closeProjectDetails() { closeModal('projectDetailModal'); }
-function showReferences() { openModal('referencesModal'); }
+function showReferences(trigger = null) { openModal('referencesModal', trigger); }
 function closeReferences() { closeModal('referencesModal'); }
 function showPrivateProjects() { openModal('privateProjectsModal'); if (isPrivateUnlocked) { document.getElementById('passwordSection').style.display = 'none'; document.getElementById('privateProjectsContent').style.display = 'block'; renderPrivateProjects(); } }
 function closePrivateProjects() { closeModal('privateProjectsModal'); }
@@ -746,10 +746,13 @@ const BlogApp = {
         }
     },
 
-    open: function () {
+    open: function (trigger = null) {
         const modal = document.getElementById('blogModal');
         if (modal) {
-            modal.classList.add('active');
+            // Pass trigger to generic open
+            openModal('blogModal', trigger);
+
+            // Still run internal logic
             this.renderTabs();
             this.renderGrid();
         } else {
@@ -758,12 +761,9 @@ const BlogApp = {
     },
 
     close: function () {
-        const modal = document.getElementById('blogModal');
-        if (modal) {
-            modal.classList.remove('active');
-            // Reset Reader
-            setTimeout(() => this.closeReader(), 300);
-        }
+        closeModal('blogModal');
+        // Reset Reader
+        setTimeout(() => this.closeReader(), 300);
     },
 
     renderTabs: function () {
@@ -809,7 +809,7 @@ const BlogApp = {
                 : `<div class="placeholder-thumb">${item.category.charAt(0)}</div>`;
 
             return `
-            <div class="personal-card" onclick="BlogApp.openReader('${item.docId}')">
+            <div class="personal-card" onclick="BlogApp.openReader('${item.docId}', this)">
                 <div class="card-image">${thumbHTML}</div>
                 <div class="card-content">
                     <span class="status-badge">${item.category}</span>
@@ -820,7 +820,7 @@ const BlogApp = {
         }).join('');
     },
 
-    openReader: function (docId) {
+    openReader: function (docId, trigger = null) {
         const item = this.data.find(i => i.docId === docId);
         if (!item) return;
 
