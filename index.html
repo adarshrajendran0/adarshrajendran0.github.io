@@ -91,14 +91,7 @@
                     </a>
                 </div>
 
-                <div style="margin-top: 2rem;">
-                    <button class="btn-secondary" onclick="BlogApp.open()"
-                        style="font-size:0.9rem; padding: 0.6rem 1.2rem; cursor: pointer;">
-                        <span class="material-symbols-rounded"
-                            style="font-size:1.1rem; vertical-align:middle; margin-right:5px;">person_book</span>
-                        Beyond the Resume
-                    </button>
-                </div>
+
             </div>
 
             <div class="hero-visual" id="heroVisual">
@@ -200,15 +193,30 @@
                 </p>
             </div>
 
-            <div class="references-trigger" onclick="showReferences()">
-                <div class="trigger-icon">
-                    <span class="material-symbols-rounded">group</span>
+            <div class="references-container"
+                style="display: flex; gap: var(--space-md); flex-wrap: wrap; margin-bottom: var(--space-lg);">
+                <div class="references-trigger" onclick="showReferences(this)" style="flex: 1; margin-bottom: 0;">
+                    <div class="trigger-icon">
+                        <span class="material-symbols-rounded">group</span>
+                    </div>
+                    <div class="trigger-text">
+                        <h3>Professional References</h3>
+                        <p>Vouched for by professors, mentors, and colleagues.</p>
+                    </div>
+                    <span class="material-symbols-rounded" style="margin-left: auto;">arrow_forward</span>
                 </div>
-                <div class="trigger-text">
-                    <h3>Professional References</h3>
-                    <p>Vouched for by professors, mentors, and colleagues.</p>
+
+                <div class="references-trigger" id="beyondResumeTrigger" onclick="BlogApp.open(this)"
+                    style="flex: 1; margin-bottom: 0;">
+                    <div class="trigger-icon">
+                        <span class="material-symbols-rounded">person_book</span>
+                    </div>
+                    <div class="trigger-text">
+                        <h3>Beyond the Resume</h3>
+                        <p>Explore my personal interests and stories.</p>
+                    </div>
+                    <span class="material-symbols-rounded" style="margin-left: auto;">arrow_forward</span>
                 </div>
-                <span class="material-symbols-rounded" style="margin-left: auto;">arrow_forward</span>
             </div>
 
             <div class="contact-methods">

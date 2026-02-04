@@ -60,9 +60,32 @@ function renderHero() {
 }
 
 // Helper for Animations (Open/Close)
-function openModal(modalId) {
+// Helper for Animations (Open/Close)
+let modalTriggers = new Map(); // Store trigger element for each modal ID
+
+function openModal(modalId, triggerElement = null) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.add('active');
+    if (!modal) return;
+
+    // Store trigger for closing animation
+    if (triggerElement) {
+        modalTriggers.set(modalId, triggerElement);
+    } else {
+        // Fallback: If no trigger passed, check if we have one stored (e.g. from previous open) based on context? 
+        // Better: Reset if no trigger, so we don't animate to random spot
+        // But for things like "Private Projects" which might be called recursively, keep existing?
+        // Let's rely on explicit passing.
+    }
+
+    modal.classList.add('active');
+
+    // iOS-Style Expansion Animation (FLIP)
+    if (triggerElement) {
+        const content = modal.querySelector('.modal-content');
+        if (content) {
+            animateOpen(content, triggerElement, modal);
+        }
+    }
 }
 
 function closeModal(modalId) {
@@ -70,10 +93,108 @@ function closeModal(modalId) {
     if (!modal) return;
 
     modal.classList.add('closing');
+
+    const content = modal.querySelector('.modal-content');
+    const trigger = modalTriggers.get(modalId);
+
+    if (trigger && content && document.contains(trigger)) {
+        animateClose(content, trigger, modal);
+    } else {
+        // Default Fade Out if no trigger source
+        setTimeout(() => {
+            modal.classList.remove('active');
+            modal.classList.remove('closing');
+            modal.style.opacity = ''; // Reset inline styles
+        }, 300);
+    }
+}
+
+function animateOpen(destination, source, modalWrapper) {
+    // 1. FIRST: Get starting state
+    const srcRect = source.getBoundingClientRect();
+
+    // 2. LAST: Get final state (need to be visible/layouted)
+    // Modal is already 'display: flex' due to .active class
+    const destRect = destination.getBoundingClientRect();
+
+    // 3. INVERT: Calculate changes
+    const scaleX = srcRect.width / destRect.width;
+    const scaleY = srcRect.height / destRect.height;
+
+    // Calculate center-to-center translation
+    const srcCenterX = srcRect.left + srcRect.width / 2;
+    const srcCenterY = srcRect.top + srcRect.height / 2;
+    const destCenterX = destRect.left + destRect.width / 2;
+    const destCenterY = destRect.top + destRect.height / 2;
+
+    const translateX = srcCenterX - destCenterX;
+    const translateY = srcCenterY - destCenterY;
+
+    // 4. PLAY: Apply transforms
+
+    // Start at Source Source
+    destination.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+    destination.style.transformOrigin = 'center center';
+    destination.style.opacity = '0'; // Start faded out slightly? Or just transition opacity
+    modalWrapper.style.opacity = '0'; // Fade in background
+
+    // Force Reflow
+    destination.offsetHeight;
+
+    // Animate to Final State
+    destination.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s ease';
+    modalWrapper.style.transition = 'opacity 0.3s ease';
+
+    destination.style.transform = 'translate(0, 0) scale(1, 1)';
+    destination.style.opacity = '1';
+    modalWrapper.style.opacity = '1';
+
+    // Clean up after animation
     setTimeout(() => {
-        modal.classList.remove('active');
-        modal.classList.remove('closing');
-    }, 280);
+        destination.style.transition = '';
+        destination.style.transform = '';
+        destination.style.transformOrigin = '';
+        destination.style.opacity = '';
+        modalWrapper.style.transition = '';
+        modalWrapper.style.opacity = '';
+    }, 500);
+}
+
+function animateClose(destination, source, modalWrapper) {
+    // 1. Current State (Full Size)
+    // 2. Dest State (Source Rect)
+    const srcRect = source.getBoundingClientRect();
+    const destRect = destination.getBoundingClientRect();
+
+    const scaleX = srcRect.width / destRect.width;
+    const scaleY = srcRect.height / destRect.height;
+    const srcCenterX = srcRect.left + srcRect.width / 2;
+    const srcCenterY = srcRect.top + srcRect.height / 2;
+    const destCenterX = destRect.left + destRect.width / 2;
+    const destCenterY = destRect.top + destRect.height / 2;
+
+    const translateX = srcCenterX - destCenterX;
+    const translateY = srcCenterY - destCenterY;
+
+    // Apply Transition
+    destination.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease';
+    modalWrapper.style.transition = 'opacity 0.4s ease';
+
+    destination.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+    destination.style.opacity = '0';
+    modalWrapper.style.opacity = '0';
+
+    setTimeout(() => {
+        modalWrapper.classList.remove('active');
+        modalWrapper.classList.remove('closing');
+
+        // Reset styles
+        destination.style.transition = '';
+        destination.style.transform = '';
+        destination.style.opacity = '';
+        modalWrapper.style.transition = '';
+        modalWrapper.style.opacity = ''; // Reset wrapper opacity
+    }, 400);
 }
 
 function convertGoogleDriveLink(url) {
