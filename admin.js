@@ -175,6 +175,11 @@ function renderAdminList() {
         let title = item.name || item.title || item.role || item.degree || item.category;
         let subtitle = item.company || item.institution || item.relation || item.status || "";
 
+        if (currentAdminTab === 'edu_stories') {
+            title = item.title;
+            subtitle = item.category;
+        }
+
         // Disable move buttons at ends
         const upDisabled = index === 0 ? 'opacity:0.3; pointer-events:none;' : '';
         const downDisabled = index === items.length - 1 ? 'opacity:0.3; pointer-events:none;' : '';

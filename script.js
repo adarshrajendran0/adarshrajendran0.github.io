@@ -15,7 +15,7 @@ const auth = firebase.auth();
 let isPrivateUnlocked = false;
 
 // CACHE includes 'settings' for Resume URL
-let dataCache = { projects: [], experience: [], education: [], skills: [], references: [], settings: [], personal: [] };
+let dataCache = { projects: [], experience: [], education: [], skills: [], references: [], settings: [], personal: [], edu_stories: [] };
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeScrollAnimations();
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeHeroParallax();
 
     // FETCH ALL COLLECTIONS (Including Settings)
-    ['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal'].forEach(col => fetchCollection(col));
+    ['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal', 'edu_stories'].forEach(col => fetchCollection(col));
 
     // SAFETY NET: Hide loader after 1.5s max to prevent infinite spinner
     setTimeout(() => {
