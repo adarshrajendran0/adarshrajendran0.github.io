@@ -1002,6 +1002,7 @@ section {
     margin-bottom: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1154,13 +1155,7 @@ section {
     /* Reset any persistent transforms */
 }
 
-.modal.closing .modal-content {
-    /* Animation handled by JS */
-}
-
-.modal.closing {
-    /* Animation handled by JS */
-}
+/* .modal.closing styles handled by JS */
 
 @keyframes zoomIn {
     from {
@@ -2041,6 +2036,8 @@ body.dark-mode .spinner {
     /* Wider for 3 col */
     padding: 0;
     overflow: hidden;
+    position: relative;
+    /* Added for Reader Overlay */
 }
 
 .blog-modal-body {
@@ -2171,6 +2168,7 @@ body.dark-mode .spinner {
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
