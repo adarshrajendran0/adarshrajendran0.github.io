@@ -344,8 +344,51 @@ function renderEducation() {
     const container = document.getElementById('educationList'); if (!container) return;
     container.innerHTML = '';
     dataCache.education.forEach(edu => {
-        container.innerHTML += `<div class="education-card" data-animate><div class="edu-icon"><span class="material-symbols-rounded">school</span></div><h3>${edu.degree}</h3><p class="edu-field">${edu.field}</p><p class="edu-institution">${edu.institution}</p><p class="edu-year">${edu.year}</p></div>`;
+        container.innerHTML += `<div class="education-card" data-animate onclick="openEducationDetail('${edu.docId}')" style="cursor:pointer;"><div class="edu-icon"><span class="material-symbols-rounded">school</span></div><h3>${edu.degree}</h3><p class="edu-field">${edu.field}</p><p class="edu-institution">${edu.institution}</p><p class="edu-year">${edu.year}</p></div>`;
     });
+}
+function openEducationDetail(docId) {
+    let item;
+    if (dataCache && dataCache.education) {
+        item = dataCache.education.find(i => i.docId === docId);
+    }
+
+    if (!item) return;
+
+    // Reuse the Blog Reader Modal
+    const reader = document.getElementById('blogReader');
+    const content = document.getElementById('blogReaderContent');
+    if (!reader || !content) return;
+
+    reader.classList.add('active');
+
+    // Build Content
+    let html = `
+        <div class="reader-header">
+            <span class="reader-category">${item.year}</span>
+            <h1>${item.degree}</h1>
+            <h2 style="font-size:1.2rem; margin-top:0.5rem; color:var(--primary);">${item.institution}</h2>
+        </div>
+    `;
+
+    if (item.contentBlocks && item.contentBlocks.length > 0) {
+        html += '<div class="reader-body">';
+        item.contentBlocks.forEach(block => {
+            if (block.type === 'header') html += `<h3>${block.text}</h3>`;
+            if (block.type === 'paragraph') html += `<p>${block.text}</p>`;
+            if (block.type === 'quote') html += `<blockquote>${block.text}</blockquote>`;
+            if (block.type === 'image') html += `<img src="${convertGoogleDriveLink(block.text)}" class="block-img">`;
+        });
+        html += '</div>';
+    } else {
+        html += `
+        <div class="reader-body">
+            <p><strong>Field of Study:</strong> ${item.field}</p>
+        </div>`;
+    }
+
+    content.innerHTML = html;
+    reader.scrollTop = 0;
 }
 function renderSkills() {
     const container = document.getElementById('skillsList'); if (!container) return;

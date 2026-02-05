@@ -363,11 +363,43 @@ function generateFormFields(type, data = {}) {
                                                                                 // This script will NOT run via innerHTML, we handle init in renderAdminTab
                                                                             </script>`;
 
-    if (type === 'education') return `
-                                                                                    <input type="text" id="inp_degree" placeholder="Degree" value="${v('degree')}">
-                                                                                        <input type="text" id="inp_field" placeholder="Field of Study" value="${v('field')}">
-                                                                                            <input type="text" id="inp_institution" placeholder="Institution" value="${v('institution')}">
-                                                                                                <input type="text" id="inp_year" placeholder="Year / Duration" value="${v('year')}">`;
+    if (type === 'education') {
+        const blocksHtml = (data.contentBlocks || []).map((b, idx) => {
+            const isRich = b.type === 'paragraph';
+            const uniqueId = `quill_edu_${Date.now()}_${idx}`;
+            const inputField = isRich
+                ? `<div id="${uniqueId}" class="quill-editor-container" data-content="${(b.text || '').replace(/"/g, '&quot;')}" style="background:white;"></div>`
+                : `<input class="form-input block-content" placeholder="Enter content or URL..." value="${b.text}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">`;
+
+            return `
+            <div class="block-item" data-type="${b.type}" style="background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${b.type}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
+                </div>
+                ${inputField}
+            </div>`;
+        }).join('');
+
+        return `
+            <input type="text" id="inp_degree" placeholder="Degree" value="${v('degree')}">
+            <input type="text" id="inp_field" placeholder="Field of Study" value="${v('field')}">
+            <input type="text" id="inp_institution" placeholder="Institution" value="${v('institution')}">
+            <input type="text" id="inp_year" placeholder="Year / Duration" value="${v('year')}">
+            
+            <hr style="margin:20px 0; border:0; border-top:1px solid #ddd;">
+            <h4 style="margin-bottom:10px;">Deep Dive Content</h4>
+            <div id="contentBlocksContainer" style="margin-bottom:15px; max-height:300px; overflow-y:auto; border:1px dashed #ccc; padding:10px;">
+                ${blocksHtml}
+            </div>
+            <div class="builder-controls" style="display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="button" class="btn-secondary" onclick="addContentBlock('header')">+ Header</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+            </div>
+            `;
+    }
 
     if (type === 'skills') return `
                                                                                                     <input type="text" id="inp_category" placeholder="Category Name" value="${v('category')}">
@@ -631,6 +663,7 @@ async function saveItemToFirebase() {
         data.field = document.getElementById('inp_field').value;
         data.institution = document.getElementById('inp_institution').value;
         data.year = document.getElementById('inp_year').value;
+        data.contentBlocks = getBlocksFromUI();
     }
     else if (currentAdminTab === 'skills') {
         data.category = document.getElementById('inp_category').value;
