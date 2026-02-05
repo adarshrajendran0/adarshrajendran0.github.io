@@ -513,75 +513,7 @@ function generateFormFields(type, data = {}) {
         `;
     }
 
-    else if (currentAdminTab === 'edu_stories') {
-        const parentId = document.getElementById('inp_parentId').value;
-        if (!parentId) { alert("Please select a Degree."); return; }
 
-        data.parentId = parentId;
-        data.category = document.getElementById('inp_perCategory').value;
-        data.title = document.getElementById('inp_perTitle').value;
-        data.summary = document.getElementById('inp_perSummary').value;
-
-        // --- 1. Thumbnail Upload ---
-        const thumbInput = document.getElementById('inp_per_file');
-        const existingThumb = document.getElementById('inp_perThumbnail').value;
-        let thumbUrl = existingThumb;
-
-        if (croppedBlob) {
-            const saveBtn = document.querySelector('#adminModal .btn-primary');
-            saveBtn.innerText = "Uploading Thumbnail...";
-            saveBtn.disabled = true;
-            try {
-                const uniqueName = `edu_stories_thumbs/${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}.png`;
-                thumbUrl = await uploadBlobToStorage(croppedBlob, uniqueName);
-            } catch (e) {
-                alert("Thumbnail Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
-                return;
-            }
-        }
-        data.thumbnail = thumbUrl;
-
-        // --- 2. Gallery Images Upload (Copied from Personal) ---
-        const existingImageDivs = document.querySelectorAll('.existing-image');
-        let finalImages = Array.from(existingImageDivs).map(div => {
-            const url = div.querySelector('.inp_existing_image').value;
-            const inCarousel = div.querySelector('.inp_img_carousel').checked;
-            return { url, inCarousel };
-        });
-
-        const galleryInput = document.getElementById('inp_per_gallery_files');
-        if (galleryInput && galleryInput.files.length > 0) {
-            const saveBtn = document.querySelector('#adminModal .btn-primary');
-            saveBtn.innerText = "Uploading Gallery...";
-            saveBtn.disabled = true;
-            try {
-                const uploadPromises = Array.from(galleryInput.files).map((file, index) => {
-                    const uniqueName = `edu_stories_gallery/${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}_${index}`;
-                    return uploadFileToStorage(file, uniqueName);
-                });
-                const newUrls = await Promise.all(uploadPromises);
-
-                // Add new images (Default: inCarousel = true)
-                const newImageObjects = newUrls.map(url => ({
-                    url: url,
-                    inCarousel: true
-                }));
-
-                finalImages = [...finalImages, ...newImageObjects];
-            } catch (e) {
-                alert("Gallery Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
-                return;
-            }
-        }
-        data.images = finalImages;
-
-        data.contentBlocks = getBlocksFromUI();
-        croppedBlob = null;
-    }
 
     if (type === 'personal') {
         const existingImages = data.images || [];
@@ -857,6 +789,74 @@ async function saveItemToFirebase() {
         data.email = document.getElementById('inp_email').value;
 
         // Clear blob
+        croppedBlob = null;
+    }
+    else if (currentAdminTab === 'edu_stories') {
+        const parentId = document.getElementById('inp_parentId').value;
+        if (!parentId) { alert("Please select a Degree."); return; }
+
+        data.parentId = parentId;
+        data.category = document.getElementById('inp_perCategory').value;
+        data.title = document.getElementById('inp_perTitle').value;
+        data.summary = document.getElementById('inp_perSummary').value;
+
+        // --- 1. Thumbnail Upload ---
+        const thumbInput = document.getElementById('inp_per_file');
+        if (croppedBlob) {
+            const saveBtn = document.querySelector('#adminModal .btn-primary');
+            saveBtn.innerText = "Uploading Thumbnail...";
+            saveBtn.disabled = true;
+            try {
+                const uniqueName = `edu_stories_thumbs/${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}.png`;
+                // FIX: Use uploadFileToStorage for Blob
+                const url = await uploadFileToStorage(croppedBlob, uniqueName);
+                data.thumbnail = url;
+            } catch (e) {
+                alert("Thumbnail Upload Failed: " + e.message);
+                saveBtn.innerText = "Save Changes";
+                saveBtn.disabled = false;
+                return;
+            }
+        } else {
+            data.thumbnail = document.getElementById('inp_perThumbnail').value;
+        }
+
+        // --- 2. Gallery Images Upload ---
+        const existingImageDivs = document.querySelectorAll('.existing-image');
+        let finalImages = Array.from(existingImageDivs).map(div => {
+            const url = div.querySelector('.inp_existing_image').value;
+            const inCarousel = div.querySelector('.inp_img_carousel').checked;
+            return { url, inCarousel };
+        });
+
+        const galleryInput = document.getElementById('inp_per_gallery_files');
+        if (galleryInput && galleryInput.files.length > 0) {
+            const saveBtn = document.querySelector('#adminModal .btn-primary');
+            saveBtn.innerText = "Uploading Gallery...";
+            saveBtn.disabled = true;
+            try {
+                const uploadPromises = Array.from(galleryInput.files).map((file, index) => {
+                    const uniqueName = `edu_stories_gallery/${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}_${index}`;
+                    return uploadFileToStorage(file, uniqueName);
+                });
+                const newUrls = await Promise.all(uploadPromises);
+
+                const newImageObjects = newUrls.map(url => ({
+                    url: url,
+                    inCarousel: true
+                }));
+
+                finalImages = [...finalImages, ...newImageObjects];
+            } catch (e) {
+                alert("Gallery Upload Failed: " + e.message);
+                saveBtn.innerText = "Save Changes";
+                saveBtn.disabled = false;
+                return;
+            }
+        }
+        data.images = finalImages;
+
+        data.contentBlocks = getBlocksFromUI();
         croppedBlob = null;
     }
     else if (currentAdminTab === 'personal') {
