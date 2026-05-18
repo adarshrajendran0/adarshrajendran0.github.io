@@ -394,6 +394,7 @@ function generateFormFields(type, data = {}) {
                 <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+                <button type="button" class="btn-secondary" onclick="openPasteTextModal()">+ Paste Text</button>
             </div>
             `;
     }
@@ -506,6 +507,7 @@ function generateFormFields(type, data = {}) {
                 <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+                <button type="button" class="btn-secondary" onclick="openPasteTextModal()">+ Paste Text</button>
             </div>
         `;
     }
@@ -586,6 +588,7 @@ function generateFormFields(type, data = {}) {
                 <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+                <button type="button" class="btn-secondary" onclick="openPasteTextModal()">+ Paste Text</button>
             </div>
         `;
     }
@@ -1117,6 +1120,61 @@ function addContentBlock(type, value = '') {
 
     // Scroll to bottom
     container.scrollTop = container.scrollHeight;
+}
+
+function openPasteTextModal() {
+    const overlay = document.createElement('div');
+    overlay.id = 'pasteTextOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1100;backdrop-filter:blur(4px);';
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+
+    overlay.innerHTML = `
+        <div style="background:white;padding:1.5rem;border-radius:16px;width:min(90%,520px);box-shadow:0 20px 50px rgba(0,0,0,0.25);animation:slideUp 0.2s ease;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid #eee;">
+                <h3 style="margin:0;color:var(--primary);">Paste Text</h3>
+                <button onclick="document.getElementById('pasteTextOverlay').remove()" style="background:none;border:none;cursor:pointer;padding:4px;border-radius:50%;color:#666;font-size:1.3rem;line-height:1;">&times;</button>
+            </div>
+            <p style="font-size:0.8rem;color:#888;margin:0 0 0.75rem;">
+                <code style="background:#f3f3f3;padding:1px 4px;border-radius:3px;">#</code> or
+                <code style="background:#f3f3f3;padding:1px 4px;border-radius:3px;">##</code> → Header &nbsp;·&nbsp;
+                <code style="background:#f3f3f3;padding:1px 4px;border-radius:3px;">&gt;</code> → Quote &nbsp;·&nbsp;
+                blank line → skip &nbsp;·&nbsp; everything else → Paragraph
+            </p>
+            <textarea id="pasteTextInput" rows="10"
+                placeholder="Paste your text here..."
+                style="width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-family:inherit;font-size:0.9rem;resize:vertical;box-sizing:border-box;"></textarea>
+            <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:1rem;padding-top:1rem;border-top:1px solid #eee;">
+                <button class="btn-secondary" onclick="document.getElementById('pasteTextOverlay').remove()">Cancel</button>
+                <button class="btn-primary" onclick="importPastedText()">Import</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    setTimeout(() => { const ta = document.getElementById('pasteTextInput'); if (ta) ta.focus(); }, 50);
+}
+
+function importPastedText() {
+    const textarea = document.getElementById('pasteTextInput');
+    if (!textarea) return;
+
+    // Escape HTML entities so plain text is safe inside Quill's dangerouslyPasteHTML
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+    for (const rawLine of textarea.value.split('\n')) {
+        const line = rawLine.trim();
+        if (!line) continue; // skip empty lines
+
+        if (/^#{1,2}\s/.test(line)) {
+            addContentBlock('header', line.replace(/^#{1,2}\s+/, ''));
+        } else if (/^>\s?/.test(line)) {
+            addContentBlock('quote', line.replace(/^>\s?/, ''));
+        } else {
+            addContentBlock('paragraph', esc(line));
+        }
+    }
+
+    document.getElementById('pasteTextOverlay').remove();
 }
 
 function getBlocksFromUI() {
