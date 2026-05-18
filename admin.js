@@ -146,8 +146,11 @@ function renderAdminList() {
 
     items.forEach((item, index) => {
         let title = item.name || item.title || item.role || item.degree || item.category;
-        let subtitle = item.company || item.institution || item.relation || item.status || "";
+        let subtitle = item.company || item.institution || item.relation || "";
 
+        if (currentAdminTab === 'projects') {
+            subtitle = item.visibility || '';
+        }
         if (currentAdminTab === 'edu_stories') {
             title = item.title;
             subtitle = item.category;
@@ -156,6 +159,17 @@ function renderAdminList() {
         // Disable move buttons at ends
         const upDisabled = index === 0 ? 'opacity:0.3; pointer-events:none;' : '';
         const downDisabled = index === items.length - 1 ? 'opacity:0.3; pointer-events:none;' : '';
+
+        const isCompleted = (item.status || 'Active') === 'Completed';
+        const statusToggle = currentAdminTab === 'projects' ? `
+            <select onchange="updateProjectStatus('${item.docId}', this.value)"
+                    style="font-size:0.8rem; padding:3px 8px; border-radius:4px; cursor:pointer; margin:0;
+                           border:1px solid ${isCompleted ? '#c8e6c9' : '#ffe0b2'};
+                           background:${isCompleted ? '#e8f5e9' : '#fff3e0'};
+                           color:${isCompleted ? '#2e7d32' : '#e65100'};">
+                <option value="Active" ${!isCompleted ? 'selected' : ''}>Active</option>
+                <option value="Completed" ${isCompleted ? 'selected' : ''}>Completed</option>
+            </select>` : '';
 
         container.innerHTML += `
             <div class="admin-project-item">
@@ -166,6 +180,7 @@ function renderAdminList() {
                 <div class="admin-btn-group">
                     <button class="btn-move" onclick="moveItem('${item.docId}', -1)" style="${upDisabled}">↑</button>
                     <button class="btn-move" onclick="moveItem('${item.docId}', 1)" style="${downDisabled}">↓</button>
+                    ${statusToggle}
                     <div style="width:1px;height:20px;background:#ddd;margin:0 5px;"></div>
                     <button class="btn-edit" onclick="editItem('${item.docId}')">Edit</button>
                     <button class="btn-delete" onclick="deleteItem('${item.docId}')">Delete</button>
@@ -304,6 +319,10 @@ function generateFormFields(type, data = {}) {
                                                                         <select id="inp_visibility" style="margin-top:15px;">
                                                                             <option value="public" ${v('visibility') === 'public' ? 'selected' : ''}>Public</option>
                                                                             <option value="private" ${v('visibility') === 'private' ? 'selected' : ''}>Private</option>
+                                                                        </select>
+                                                                        <select id="inp_status" style="margin-top:10px;">
+                                                                            <option value="Active" ${(v('status') || 'Active') !== 'Completed' ? 'selected' : ''}>Active</option>
+                                                                            <option value="Completed" ${v('status') === 'Completed' ? 'selected' : ''}>Completed</option>
                                                                         </select>
                                                                         <label style="display:flex;align-items:center;gap:10px;margin-top:10px;">
                                                                             <input type="checkbox" id="inp_highlight" ${v('highlight') ? 'checked' : ''} style="width:auto;margin:0;">
@@ -691,7 +710,7 @@ async function saveItemToSupabase() {
 
             data.visibility = document.getElementById('inp_visibility').value;
         data.highlight = document.getElementById('inp_highlight').checked;
-        data.status = 'Active';
+        data.status = document.getElementById('inp_status').value;
         data.icon = 'work';
     }
     else if (currentAdminTab === 'experience') {
@@ -944,6 +963,21 @@ async function deleteItem(docId) {
         if (error) { alert('Error deleting: ' + error.message); return; }
         fetchCollection(currentAdminTab);
     }
+}
+
+async function updateProjectStatus(docId, newStatus) {
+    const { error } = await supabaseClient
+        .from('projects')
+        .update({ status: newStatus })
+        .eq('id', docId);
+    if (error) {
+        alert('Failed to update status: ' + error.message);
+        renderAdminList();
+        return;
+    }
+    const item = dataCache.projects.find(i => i.docId === docId);
+    if (item) item.status = newStatus;
+    renderAdminList();
 }
 
 async function moveItem(docId, dir) {
