@@ -647,12 +647,6 @@ async function saveItemToSupabase() {
         const title = document.getElementById('inp_title').value;
         if (!title) { alert("Title is required"); return; }
 
-        // Show Loading State
-        const saveBtn = document.querySelector('#adminModal .btn-primary');
-        const originalText = saveBtn.innerText;
-        saveBtn.innerText = "Uploading & Saving...";
-        saveBtn.disabled = true;
-
         // 1. Collect Existing URLs
         const existingInputs = document.querySelectorAll('.inp_existing_image');
         let finalImages = Array.from(existingInputs).map(inp => inp.value);
@@ -660,6 +654,10 @@ async function saveItemToSupabase() {
         // 2. Upload New Files
         const fileInput = document.getElementById('inp_files');
         if (fileInput.files.length > 0) {
+            const saveBtn = document.querySelector('#adminModal .btn-primary');
+            const originalText = saveBtn.innerText;
+            saveBtn.innerText = "Uploading & Saving...";
+            saveBtn.disabled = true;
             try {
                 const uploadPromises = Array.from(fileInput.files).map((file, index) => {
                     const uniqueName = `projects/${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}_${index}`;
@@ -670,9 +668,10 @@ async function saveItemToSupabase() {
                 finalImages = [...finalImages, ...newUrls];
             } catch (error) {
                 alert("Upload Failed: " + error.message);
+                return;
+            } finally {
                 saveBtn.innerText = originalText;
                 saveBtn.disabled = false;
-                return;
             }
         }
 
@@ -743,6 +742,7 @@ async function saveItemToSupabase() {
 
         if (croppedBlob) {
             const saveBtn = document.querySelector('#adminModal .btn-primary');
+            const originalText = saveBtn.innerText;
             saveBtn.innerText = "Uploading Crop...";
             saveBtn.disabled = true;
             try {
@@ -751,9 +751,10 @@ async function saveItemToSupabase() {
                 data.image = url;
             } catch (e) {
                 alert("Crop Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
                 return;
+            } finally {
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
             }
         } else {
             data.image = document.getElementById('inp_image').value;
@@ -779,21 +780,21 @@ async function saveItemToSupabase() {
         data.summary = document.getElementById('inp_perSummary').value;
 
         // --- 1. Thumbnail Upload ---
-        const thumbInput = document.getElementById('inp_per_file');
         if (croppedBlob) {
             const saveBtn = document.querySelector('#adminModal .btn-primary');
+            const originalText = saveBtn.innerText;
             saveBtn.innerText = "Uploading Thumbnail...";
             saveBtn.disabled = true;
             try {
                 const uniqueName = `edu_stories_thumbs/${data.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_${Date.now()}.png`;
-                // FIX: Use uploadFileToStorage for Blob
                 const url = await uploadFileToStorage(croppedBlob, uniqueName);
                 data.thumbnail = url;
             } catch (e) {
                 alert("Thumbnail Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
                 return;
+            } finally {
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
             }
         } else {
             data.thumbnail = document.getElementById('inp_perThumbnail').value;
@@ -810,6 +811,7 @@ async function saveItemToSupabase() {
         const galleryInput = document.getElementById('inp_per_gallery_files');
         if (galleryInput && galleryInput.files.length > 0) {
             const saveBtn = document.querySelector('#adminModal .btn-primary');
+            const originalText = saveBtn.innerText;
             saveBtn.innerText = "Uploading Gallery...";
             saveBtn.disabled = true;
             try {
@@ -827,9 +829,10 @@ async function saveItemToSupabase() {
                 finalImages = [...finalImages, ...newImageObjects];
             } catch (e) {
                 alert("Gallery Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
                 return;
+            } finally {
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
             }
         }
         data.images = finalImages;
@@ -846,6 +849,7 @@ async function saveItemToSupabase() {
         // --- 1. Thumbnail Upload ---
         if (croppedBlob) {
             const saveBtn = document.querySelector('#adminModal .btn-primary');
+            const originalText = saveBtn.innerText;
             saveBtn.innerText = "Uploading Thumbnail...";
             saveBtn.disabled = true;
             try {
@@ -854,9 +858,10 @@ async function saveItemToSupabase() {
                 data.thumbnail = url;
             } catch (e) {
                 alert("Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
                 return;
+            } finally {
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
             }
         } else {
             // Keep existing or empty
@@ -874,6 +879,7 @@ async function saveItemToSupabase() {
         const galleryInput = document.getElementById('inp_per_gallery_files');
         if (galleryInput && galleryInput.files.length > 0) {
             const saveBtn = document.querySelector('#adminModal .btn-primary');
+            const originalText = saveBtn.innerText;
             saveBtn.innerText = "Uploading Gallery...";
             saveBtn.disabled = true;
             try {
@@ -892,9 +898,10 @@ async function saveItemToSupabase() {
                 finalImages = [...finalImages, ...newImageObjects];
             } catch (e) {
                 alert("Gallery Upload Failed: " + e.message);
-                saveBtn.innerText = "Save Changes";
-                saveBtn.disabled = false;
                 return;
+            } finally {
+                saveBtn.innerText = originalText;
+                saveBtn.disabled = false;
             }
         }
         data.images = finalImages;
