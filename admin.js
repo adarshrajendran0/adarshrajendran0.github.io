@@ -1,19 +1,11 @@
 // Admin JavaScript for Portfolio Website
 
-// 1. Firebase Configuration & Initialization
-const firebaseConfig = {
-    apiKey: "AIzaSyDSUrdCcffwob-fQLolHgXbmRRGlXBG8CM",
-    authDomain: "adarsh-portfolio-28430.firebaseapp.com",
-    projectId: "adarsh-portfolio-28430",
-    storageBucket: "adarsh-portfolio-28430.firebasestorage.app",
-    messagingSenderId: "998179272542",
-    appId: "1:998179272542:web:09c1931649504b0f0dc1cf"
-};
+// ── Supabase Configuration ────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://akmawwkmfvvaftlrhmmp.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_gJ0soXWeAnr9iNFaRQ89Ig_blkKK5Q2';
 
-if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-const db = firebase.firestore();
-const auth = firebase.auth();
-const storage = firebase.storage();
+const { createClient } = supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // 2. State & Cache
 let currentAdminTab = 'projects';
@@ -23,116 +15,97 @@ let croppedBlob = null;
 let quillInstances = new Map(); // Store Quill instances by ID
 
 // 3. Initialization
-// 24. Initialization
 document.addEventListener('DOMContentLoaded', () => {
-    // Check for Redirect Result (Mobile Login Flow)
-    auth.getRedirectResult()
-        .then((result) => {
-            if (result.user) {
-                console.log("Logged in via Redirect:", result.user.email);
-            }
-        })
-        .catch((error) => {
-            console.error("Redirect Login Error:", error);
-            const errorMsg = document.getElementById('loginError');
-            if (errorMsg) {
-                errorMsg.textContent = "Login Failed: " + error.message;
-                errorMsg.style.display = 'block';
-            }
-        });
+    // Handle OAuth redirect result (mobile flow)
+    supabaseClient.auth.getSession().then(({ data: { session } }) => {
+        handleAuthUser(session ? session.user : null);
+    });
 
-    // Auth Listener
-    auth.onAuthStateChanged((user) => {
-        const loginSection = document.getElementById('adminLoginSection');
-        const contentSection = document.getElementById('adminContent');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
-
-        if (user) {
-            // SECURITY: Whitelist Check
-            const ALLOWED_EMAIL = "adarshrajendran0@gmail.com";
-            if (user.email !== ALLOWED_EMAIL) {
-                alert("Access Denied: " + user.email + " is not authorized.");
-                auth.signOut();
-                return;
-            }
-
-            if (loginSection) loginSection.style.display = 'none';
-            if (contentSection) contentSection.style.display = 'block';
-            if (userEmailDisplay) userEmailDisplay.textContent = user.email;
-
-            // Start Fetching Data ONLY when logged in
-            ['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal', 'edu_stories'].forEach(col => fetchCollection(col));
-            switchAdminTab(currentAdminTab);
-        } else {
-            if (loginSection) loginSection.style.display = 'flex'; // Flex for centering
-            if (contentSection) contentSection.style.display = 'none';
-        }
+    // Auth State Listener
+    supabaseClient.auth.onAuthStateChange((_event, session) => {
+        handleAuthUser(session ? session.user : null);
     });
 });
 
-// 4. Auth Functions
-function adminLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
+function handleAuthUser(user) {
+    const loginSection = document.getElementById('adminLoginSection');
+    const contentSection = document.getElementById('adminContent');
+    const userEmailDisplay = document.getElementById('userEmailDisplay');
 
-    // Detect Mobile (Simple regex check)
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (user) {
+        // SECURITY: Whitelist Check
+        const ALLOWED_EMAIL = "adarshrajendran0@gmail.com";
+        if (user.email !== ALLOWED_EMAIL) {
+            alert("Access Denied: " + user.email + " is not authorized.");
+            supabaseClient.auth.signOut();
+            return;
+        }
 
-    if (isMobile) {
-        // Use Redirect for Mobile
-        auth.signInWithRedirect(provider);
+        if (loginSection) loginSection.style.display = 'none';
+        if (contentSection) contentSection.style.display = 'block';
+        if (userEmailDisplay) userEmailDisplay.textContent = user.email;
+
+        // Start Fetching Data ONLY when logged in
+        ['projects', 'experience', 'education', 'skills', 'references', 'settings', 'personal', 'edu_stories'].forEach(col => fetchCollection(col));
+        switchAdminTab(currentAdminTab);
     } else {
-        // Use Popup for Desktop
-        auth.signInWithPopup(provider)
-            .then((result) => {
-                console.log("Logged in as:", result.user.email);
-                // onAuthStateChanged will handle the UI switch automatically
-            })
-            .catch((error) => {
-                console.error("Login Error:", error);
-                const errorMsg = document.getElementById('loginError');
-                if (errorMsg) {
-                    errorMsg.textContent = "Login Failed: " + error.message;
-                    errorMsg.style.display = 'block';
-                } else {
-                    alert("Login Failed: " + error.message);
-                }
-            });
+        if (loginSection) loginSection.style.display = 'flex';
+        if (contentSection) contentSection.style.display = 'none';
     }
 }
 
-// 5. Data Fetching (Read for List)
-function fetchCollection(collectionName) {
-    db.collection(collectionName).onSnapshot((snapshot) => {
-        const items = [];
-        snapshot.forEach((doc) => {
-            const item = doc.data();
-            item.docId = doc.id;
-            items.push(item);
-        });
-
-        // Sort
-        if (collectionName !== 'settings') {
-            items.sort((a, b) => {
-                if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-                return (b.id || 0) - (a.id || 0);
-            });
-        }
-
-        dataCache[collectionName] = items;
-        if (currentAdminTab === collectionName) {
-            if (collectionName === 'settings') {
-                // Re-render settings form if it's open
-                const existingConfig = items.find(i => i.docId === 'config');
-                // Only re-render if the modal is actually open/visible to avoid side effects
-                if (document.getElementById('adminModal').style.display === 'flex') {
-                    document.getElementById('editItemId').value = 'config';
-                    document.getElementById('dynamicFormFields').innerHTML = generateFormFields('settings', existingConfig || {});
-                }
-            } else {
-                renderAdminList();
-            }
+// 4. Auth Functions
+function adminLogin() {
+    supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.href }
+    }).catch((error) => {
+        console.error("Login Error:", error);
+        const errorMsg = document.getElementById('loginError');
+        if (errorMsg) {
+            errorMsg.textContent = "Login Failed: " + error.message;
+            errorMsg.style.display = 'block';
+        } else {
+            alert("Login Failed: " + error.message);
         }
     });
+}
+
+function adminLogout() {
+    supabaseClient.auth.signOut();
+}
+
+// 5. Data Fetching (Read for List)
+async function fetchCollection(collectionName) {
+    const { data: items, error } = await supabaseClient
+        .from(collectionName)
+        .select('*');
+
+    if (error) { console.error(`Error fetching ${collectionName}:`, error); return; }
+
+    // Supabase returns plain objects — normalise docId
+    items.forEach(item => { item.docId = item.id !== undefined ? String(item.id) : item.docId; });
+
+    // Sort
+    if (collectionName !== 'settings') {
+        items.sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
+            return (b.id || 0) - (a.id || 0);
+        });
+    }
+
+    dataCache[collectionName] = items;
+    if (currentAdminTab === collectionName) {
+        if (collectionName === 'settings') {
+            const existingConfig = items.find(i => i.docId === 'config');
+            if (document.getElementById('adminModal').style.display === 'flex') {
+                document.getElementById('editItemId').value = 'config';
+                document.getElementById('dynamicFormFields').innerHTML = generateFormFields('settings', existingConfig || {});
+            }
+        } else {
+            renderAdminList();
+        }
+    }
 }
 
 // 6. UI Logic
@@ -615,7 +588,7 @@ async function hashPassword(password) {
 }
 
 // 7. CRUD Operations
-async function saveItemToFirebase() {
+async function saveItemToSupabase() {
     const docId = document.getElementById('editItemId').value;
     const currentItems = dataCache[currentAdminTab] || [];
 
@@ -663,9 +636,9 @@ async function saveItemToFirebase() {
             }
         }
 
-        db.collection('settings').doc('config').set(heroData, { merge: true })
-            .then(() => { alert("Settings Updated!"); })
-            .catch(err => alert("Error: " + err.message));
+        // Save to Supabase
+        await supabaseClient.from('settings').upsert({ id: 'config', ...heroData });
+        alert("Settings Updated!");
         return;
     }
 
@@ -717,7 +690,7 @@ async function saveItemToFirebase() {
         data.tags = document.getElementById('inp_tags').value.split(',').map(s => s.trim()).filter(s => s);
         data.images = finalImages;
 
-        data.visibility = document.getElementById('inp_visibility').value;
+            data.visibility = document.getElementById('inp_visibility').value;
         data.highlight = document.getElementById('inp_highlight').checked;
         data.status = 'Active';
         data.icon = 'work';
@@ -932,28 +905,37 @@ async function saveItemToFirebase() {
     }
 
 
-    if (docId) {
-        db.collection(currentAdminTab).doc(docId).update(data)
-            .then(() => {
-                alert("Updated!");
-                document.getElementById('adminModal').style.display = 'none';
-            })
-            .catch(err => alert("Error updating: " + err.message));
-    } else {
-        db.collection(currentAdminTab).add(data)
-            .then(() => {
-                alert("Item Added!");
-                document.getElementById('adminModal').style.display = 'none';
+    // ── Write to Supabase ────────────────────────────────────────────────────
+    // Remove docId from payload (it's the id column)
+    const { docId: _docId, ...payload } = data;
 
-            })
-            .catch(err => alert("Error creating: " + err.message));
+    if (docId) {
+        const { error } = await supabaseClient
+            .from(currentAdminTab)
+            .update(payload)
+            .eq('id', docId);
+        if (error) { alert('Error updating: ' + error.message); return; }
+        alert('Updated!');
+    } else {
+        const { error } = await supabaseClient
+            .from(currentAdminTab)
+            .insert(payload);
+        if (error) { alert('Error creating: ' + error.message); return; }
+        alert('Item Added!');
     }
+
+    document.getElementById('adminModal').style.display = 'none';
+    fetchCollection(currentAdminTab); // Refresh list
 }
 
 async function deleteItem(docId) {
-    if (confirm("Are you sure you want to delete this item?")) {
-        db.collection(currentAdminTab).doc(docId).delete()
-            .catch(err => alert("Error deleting: " + err.message));
+    if (confirm('Are you sure you want to delete this item?')) {
+        const { error } = await supabaseClient
+            .from(currentAdminTab)
+            .delete()
+            .eq('id', docId);
+        if (error) { alert('Error deleting: ' + error.message); return; }
+        fetchCollection(currentAdminTab);
     }
 }
 
@@ -965,46 +947,32 @@ async function moveItem(docId, dir) {
     const tIdx = idx + dir;
     if (tIdx < 0 || tIdx >= items.length) return;
 
-    // Swap Order Values
-    // Note: This relies on the sort being stable by order
-    // Ideally we should just swap the 'order' fields of the two items
-
-    // Simplified logic: 
-    // 1. Get current order values
-    // 2. Swap them
-    // 3. Update both docs
-
     const itemA = items[idx];
     const itemB = items[tIdx];
 
-    const orderA = itemA.order || 0;
-    const orderB = itemB.order || 0;
+    let newOrderA = itemB.order || 0;
+    let newOrderB = itemA.order || 0;
+    if (newOrderA === newOrderB) { newOrderA = idx + 1 + dir; newOrderB = idx + 1; }
 
-    const batch = db.batch();
-
-    // Swap orders
-    // If orders are same (bad data), increment one
-    let newOrderA = orderB;
-    let newOrderB = orderA;
-
-    if (newOrderA === newOrderB) {
-        newOrderA = idx + 1 + dir;
-        newOrderB = idx + 1;
-    }
-
-    batch.update(db.collection(currentAdminTab).doc(itemA.docId), { order: newOrderA });
-    batch.update(db.collection(currentAdminTab).doc(itemB.docId), { order: newOrderB });
-
-    await batch.commit().catch(err => console.error(err));
+    await supabaseClient.from(currentAdminTab).update({ order: newOrderA }).eq('id', itemA.docId);
+    await supabaseClient.from(currentAdminTab).update({ order: newOrderB }).eq('id', itemB.docId);
+    fetchCollection(currentAdminTab);
 }
 
 // ==========================================
 // NEW: HELPER FUNCTIONS FOR UPLOAD & CROP
 // ==========================================
 
-function uploadFileToStorage(file, path) {
-    const ref = storage.ref(path);
-    return ref.put(file).then(snapshot => snapshot.ref.getDownloadURL());
+async function uploadFileToStorage(file, path) {
+    // Upload to Supabase Storage bucket 'portfolio'
+    const { data, error } = await supabaseClient.storage
+        .from('portfolio')
+        .upload(path, file, { upsert: true });
+    if (error) throw error;
+    const { data: { publicUrl } } = supabaseClient.storage
+        .from('portfolio')
+        .getPublicUrl(data.path);
+    return publicUrl;
 }
 
 async function uploadResume(input) {
@@ -1012,21 +980,15 @@ async function uploadResume(input) {
         const file = input.files[0];
         const btn = input.previousElementSibling;
         const originalText = btn.innerText;
-        btn.innerText = "Uploading...";
+        btn.innerText = 'Uploading...';
         btn.disabled = true;
-
         try {
             const path = `resumes/${Date.now()}_${file.name}`;
-            const ref = storage.ref(path);
-            const metadata = {
-                contentDisposition: 'attachment; filename="' + file.name + '"'
-            };
-            const snapshot = await ref.put(file, metadata);
-            const url = await snapshot.ref.getDownloadURL();
+            const url = await uploadFileToStorage(file, path);
             document.getElementById('inp_resumeUrl').value = url;
-            alert("Resume Uploaded!");
+            alert('Resume Uploaded!');
         } catch (e) {
-            alert("Error: " + e.message);
+            alert('Error: ' + e.message);
         } finally {
             btn.innerText = originalText;
             btn.disabled = false;

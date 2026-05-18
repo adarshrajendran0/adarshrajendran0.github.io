@@ -1,16 +1,10 @@
 // Main JavaScript for Portfolio Website
-const firebaseConfig = {
-    apiKey: "AIzaSyDSUrdCcffwob-fQLolHgXbmRRGlXBG8CM",
-    authDomain: "adarsh-portfolio-28430.firebaseapp.com",
-    projectId: "adarsh-portfolio-28430",
-    storageBucket: "adarsh-portfolio-28430.firebasestorage.app",
-    messagingSenderId: "998179272542",
-    appId: "1:998179272542:web:09c1931649504b0f0dc1cf"
-};
+// ── Supabase Configuration ────────────────────────────────────────────────────
+const SUPABASE_URL  = 'https://akmawwkmfvvaftlrhmmp.supabase.co';
+const SUPABASE_ANON = 'sb_publishable_gJ0soXWeAnr9iNFaRQ89Ig_blkKK5Q2';
 
-if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-const db = firebase.firestore();
-const auth = firebase.auth();
+const { createClient } = supabase;
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON);
 
 let isPrivateUnlocked = false;
 
@@ -221,13 +215,21 @@ function hideGlobalLoader() {
 }
 
 function fetchCollection(collectionName) {
-    db.collection(collectionName).onSnapshot((snapshot) => {
-        const items = [];
-        snapshot.forEach((doc) => {
-            const item = doc.data();
-            item.docId = doc.id;
-            items.push(item);
-        });
+    const doFetch = async () => {
+        const { data: items, error } = await supabaseClient
+            .from(collectionName)
+            .select('*');
+
+        if (error) {
+            console.error(`Error fetching ${collectionName}:`, error);
+            loadingCollections.delete(collectionName);
+            if (loadingCollections.size === 0) hideGlobalLoader();
+            return;
+        }
+
+        // Supabase returns plain objects — use 'id' column as docId
+        items.forEach(item => { item.docId = item.id !== undefined ? String(item.id) : item.docId; });
+
         // Sort only if it's not settings
         if (collectionName !== 'settings') {
             items.sort((a, b) => {
@@ -244,23 +246,21 @@ function fetchCollection(collectionName) {
         if (collectionName === 'skills') renderSkills();
         if (collectionName === 'references') renderReferencesModal();
         if (collectionName === 'settings') {
-            renderSettings(); // Update Resume
-            renderHero(); // Update Hero
+            renderSettings();
+            renderHero();
         }
         if (collectionName === 'personal') {
             BlogApp.init(items);
         }
 
-        // Remove from loading set
         loadingCollections.delete(collectionName);
         if (loadingCollections.size === 0) hideGlobalLoader();
+    };
 
-    }, (error) => {
-        console.error(`Error fetching ${collectionName}:`, error);
-        // Even if error, remove from loading so we don't get stuck
-        loadingCollections.delete(collectionName);
-        if (loadingCollections.size === 0) hideGlobalLoader();
-    });
+    doFetch();
+
+    // Lightweight polling every 30 s to pick up changes (avoids needing Realtime enabled)
+    setInterval(doFetch, 30000);
 }
 
 // RENDER RESUME BUTTON
