@@ -1,0 +1,16 @@
+[
+  {
+    "id": "config",
+    "resumeUrl": "https://akmawwkmfvvaftlrhmmp.supabase.co/storage/v1/object/public/portfolio/resumes/Resume.pdf",
+    "heroBadge": "",
+    "heroTitle": "MECHANICAL ENGINEER",
+    "heroDesc": "I’m a mechanical engineer who works on early-stage, interdisciplinary systems, combining mechanical design, controls, software, and testing to reduce uncertainty through first-principle reasoning and deliberate iteration. I also build tools and workflows to improve clarity, learning, and engineering effectiveness.",
+    "stat1Num": "2+",
+    "stat1Label": "",
+    "stat2Num": "",
+    "stat2Label": "SAE National level CFD Competition",
+    "stat3Num": "",
+    "stat3Label": "",
+    "visitorPasswordHash": "f73bfd9d27ef7e5019c77ae5d23664446aebeb88c5e7773ca9ade78a80c423de"
+  }
+]

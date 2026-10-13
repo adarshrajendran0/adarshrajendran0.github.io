@@ -287,8 +287,9 @@
                 <button class="admin-tab" onclick="switchAdminTab('edu_stories')">Edu Stories</button>
             </div>
 
-            <div class="admin-actions" style="margin-bottom: 1.5rem;">
+            <div class="admin-actions" style="margin-bottom: 1.5rem; display: flex; gap: 10px;">
                 <button class="btn-primary" onclick="showAddItemForm()">+ Add New Item</button>
+                <button class="btn-secondary" onclick="exportBackupData()">Export Backup (JSON)</button>
             </div>
 
             <!-- List of Items -->
@@ -353,7 +354,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="universal_cropper.js"></script>
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-    <script src="admin.js?v=4"></script>
+    <script src="admin.js?v=5"></script>
 
 </body>
 

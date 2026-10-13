@@ -1,0 +1,20 @@
+[
+  {
+    "id": 90,
+    "order": 1,
+    "degree": "Diploma",
+    "field": "Mechanical Engineering",
+    "institution": "Carmel Polytechnic College, Punnapra",
+    "year": "2020",
+    "contentBlocks": []
+  },
+  {
+    "id": 100,
+    "order": 2,
+    "degree": "Bachelor of Technology",
+    "field": "Mechanical Engineering",
+    "institution": "TKM College of Engineering, Kollam",
+    "year": "2024",
+    "contentBlocks": []
+  }
+]

@@ -1257,3 +1257,18 @@ function initQuill(selectorOrElement, content = '') {
 
     return quill;
 }
+
+// Export / Backup all cached collections as a JSON file
+function exportBackupData() {
+    const backup = {
+        exportedAt: new Date().toISOString(),
+        data: dataCache
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `portfolio_backup_${new Date().toISOString().split('T')[0]}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+}

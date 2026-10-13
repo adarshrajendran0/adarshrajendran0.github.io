@@ -1,4 +1,6 @@
 serviceAccountKey.json
 migrate.js
 reupload_images.js
+export_data.js
 node_modules/
+.DS_Store

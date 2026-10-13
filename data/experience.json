@@ -1,0 +1,54 @@
+[
+  {
+    "id": 80,
+    "order": 3,
+    "role": "Plant Technical Supervisor (R&D)",
+    "company": "MRF Ltd.",
+    "period": "Nov 2020 – Aug 2021",
+    "highlights": [
+      "Tyre testing & BIS certification",
+      "Reduced early-stage defects"
+    ]
+  },
+  {
+    "id": 1770222884475,
+    "order": 1,
+    "role": "Mechanical Engineer",
+    "company": "Savtoa Software Technologies",
+    "period": "Jan 2025 – Present",
+    "highlights": [
+      {
+        "point": "Worked on an internal R&D program involving a dynamically controlled marine platform",
+        "story": ""
+      },
+      {
+        "point": "Focused on early-stage mechanical uncertainty reduction",
+        "story": ""
+      },
+      {
+        "point": "Contributed to control surface sizing, stability analysis, and test-driven iteration",
+        "story": ""
+      },
+      {
+        "point": "Acted as a bridge between mechanical, electronics, and software teams",
+        "story": ""
+      },
+      {
+        "point": "Emphasized logging-first testing and stepwise iteration",
+        "story": ""
+      }
+    ]
+  },
+  {
+    "id": 90,
+    "order": 2,
+    "role": "Graduate Apprentice Trainee",
+    "company": "EIMCO Elecon R&D",
+    "period": "Aug 2024 – Dec 2024",
+    "highlights": [
+      "Advanced Analysis & FEA",
+      "Mining equipment failure analysis",
+      "Accelerated FEA turnaround"
+    ]
+  }
+]

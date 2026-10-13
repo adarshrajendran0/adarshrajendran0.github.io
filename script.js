@@ -214,53 +214,94 @@ function hideGlobalLoader() {
     setTimeout(() => { if (loader) loader.style.display = 'none'; }, 500);
 }
 
-function fetchCollection(collectionName) {
-    const doFetch = async () => {
-        const { data: items, error } = await supabaseClient
-            .from(collectionName)
-            .select('*');
+// ── HYBRID DATA HANDLER ──────────────────────────────────────────
+let isSupabaseOnline = true;
 
-        if (error) {
-            console.error(`Error fetching ${collectionName}:`, error);
-            loadingCollections.delete(collectionName);
-            if (loadingCollections.size === 0) hideGlobalLoader();
-            return;
+function applyCollectionData(collectionName, items) {
+    if (!items || !Array.isArray(items)) return;
+
+    // Supabase returns plain objects — normalise docId
+    items.forEach(item => {
+        item.docId = item.id !== undefined ? String(item.id) : item.docId;
+    });
+
+    // Sort only if it's not settings
+    if (collectionName !== 'settings') {
+        items.sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
+            return (b.id || 0) - (a.id || 0);
+        });
+    }
+
+    dataCache[collectionName] = items;
+
+    if (collectionName === 'projects') renderProjects();
+    if (collectionName === 'experience') renderExperience();
+    if (collectionName === 'education') renderEducation();
+    if (collectionName === 'skills') renderSkills();
+    if (collectionName === 'references') renderReferencesModal();
+    if (collectionName === 'settings') {
+        renderSettings();
+        renderHero();
+    }
+    if (collectionName === 'personal') {
+        BlogApp.init(items);
+    }
+}
+
+async function fetchCollection(collectionName) {
+    // 1. Instant Static Fallback (SWR Pattern):
+    // Load local static JSON right away so visitors get instant rendering (0-50ms)
+    // even if Supabase is cold, asleep, paused, or slow to respond.
+    try {
+        const localRes = await fetch(`data/${collectionName}.json`, { cache: 'no-cache' });
+        if (localRes.ok) {
+            const localItems = await localRes.json();
+            if (Array.isArray(localItems) && localItems.length > 0) {
+                applyCollectionData(collectionName, localItems);
+            }
         }
-
-        // Supabase returns plain objects — use 'id' column as docId
-        items.forEach(item => { item.docId = item.id !== undefined ? String(item.id) : item.docId; });
-
-        // Sort only if it's not settings
-        if (collectionName !== 'settings') {
-            items.sort((a, b) => {
-                if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
-                return (b.id || 0) - (a.id || 0);
-            });
-        }
-
-        dataCache[collectionName] = items;
-
-        if (collectionName === 'projects') renderProjects();
-        if (collectionName === 'experience') renderExperience();
-        if (collectionName === 'education') renderEducation();
-        if (collectionName === 'skills') renderSkills();
-        if (collectionName === 'references') renderReferencesModal();
-        if (collectionName === 'settings') {
-            renderSettings();
-            renderHero();
-        }
-        if (collectionName === 'personal') {
-            BlogApp.init(items);
-        }
-
+    } catch (e) {
+        console.warn(`[Hybrid] Local cache not available for ${collectionName}:`, e);
+    } finally {
         loadingCollections.delete(collectionName);
         if (loadingCollections.size === 0) hideGlobalLoader();
+    }
+
+    // 2. Background Revalidation from Supabase:
+    // If Supabase is online, fetch the latest live data and update if available.
+    const doLiveFetch = async () => {
+        if (!isSupabaseOnline) return;
+
+        try {
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Supabase request timeout')), 3500)
+            );
+            const supabasePromise = supabaseClient.from(collectionName).select('*');
+            const { data: liveItems, error } = await Promise.race([supabasePromise, timeoutPromise]);
+
+            if (error) {
+                console.warn(`[Hybrid] Supabase fetch error for ${collectionName}:`, error.message);
+                isSupabaseOnline = false;
+                return;
+            }
+
+            if (Array.isArray(liveItems) && liveItems.length > 0) {
+                applyCollectionData(collectionName, liveItems);
+            }
+        } catch (err) {
+            console.warn(`[Hybrid] Supabase is unreachable/paused for ${collectionName}:`, err.message);
+            isSupabaseOnline = false;
+        }
     };
 
-    doFetch();
+    // Run live fetch in background
+    doLiveFetch();
 
-    // Lightweight polling every 30 s to pick up changes (avoids needing Realtime enabled)
-    setInterval(doFetch, 30000);
+    // Lightweight polling every 60s if Supabase is online
+    setInterval(() => {
+        if (isSupabaseOnline) doLiveFetch();
+    }, 60000);
 }
 
 // RENDER RESUME BUTTON

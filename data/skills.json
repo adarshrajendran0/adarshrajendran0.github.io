@@ -1,0 +1,48 @@
+[
+  {
+    "id": 70,
+    "order": 1,
+    "category": "Programming",
+    "icon": "code",
+    "items": [
+      "Python (Data/Viz)",
+      "C++ (Beginner)",
+      "Automation"
+    ]
+  },
+  {
+    "id": 90,
+    "order": 2,
+    "category": "CFD & Simulation",
+    "icon": "science",
+    "items": [
+      "ANSYS Fluent",
+      "SimScale",
+      "OpenFOAM",
+      "ANSYS Static Structural"
+    ]
+  },
+  {
+    "id": 100,
+    "order": 3,
+    "category": "Engineering & Analysis",
+    "icon": "precision_manufacturing",
+    "items": [
+      "Mechanical system design",
+      "Failure analysis",
+      "First-principles calculations"
+    ]
+  },
+  {
+    "id": 80,
+    "order": 4,
+    "category": "CAD & Design",
+    "icon": "draw",
+    "items": [
+      "SolidWorks",
+      "AutoCAD",
+      "Onshape",
+      "FreeCAD"
+    ]
+  }
+]

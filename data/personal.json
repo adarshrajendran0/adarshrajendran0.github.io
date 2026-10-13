@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1779123854983,
+    "order": 1,
+    "category": "Readings",
+    "title": "MOM TEST",
+    "summary": "A book to connect with the customers",
+    "thumbnail": "https://akmawwkmfvvaftlrhmmp.supabase.co/storage/v1/object/public/portfolio/personal/mom_test_1779120955606.jpg",
+    "images": [],
+    "contentBlocks": [
+      {
+        "text": "<p>A friend suggested I read this before heading into a client meeting for our company. I went in expecting a quick read for some last-minute tips — what I got was a complete shift in how I think about customer conversations.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>The core idea hit hard: you've been asking the wrong questions your entire life, and the people you're asking are too polite to tell you the truth. The book completely rewired how I approach a client conversation. Instead of walking in with my idea and waiting for someone to validate it, I learned to slow down and dig into their world — their problems, how they currently deal with them, what actually frustrates them day to day. It sounds simple, but most of us never do it. We pitch, we convince, we present. The Mom Test tells you to stop talking and start listening properly.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>What surprised me most was how much I was unconsciously leading conversations in the direction I wanted them to go. The book gave me the tools to catch myself doing it — and to ask questions that actually reveal something real instead of just confirming what I already believed.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>I applied it almost immediately and the difference was noticeable. Conversations felt more honest, more grounded. People opened up in ways they usually don't when you're pitching at them. That said, it's not a word-for-word playbook for every setting. With Indian customers especially, the dynamic is different — relationships, context, and indirectness play a bigger role than the book accounts for. You have to adapt the principles, not copy the script.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>Overall it was a very positive read. Short, sharp, and genuinely useful. If you deal with clients, customers, or anyone whose honest opinion matters to your work — read it before your next important conversation.</p>",
+        "type": "paragraph"
+      }
+    ]
+  },
+  {
+    "id": 1779124297115,
+    "order": 2,
+    "category": "Readings",
+    "title": "Atomic Habits",
+    "summary": "How to form habits",
+    "thumbnail": "https://akmawwkmfvvaftlrhmmp.supabase.co/storage/v1/object/public/portfolio/personal/atomic_habits_1779121348542.jpg",
+    "images": [],
+    "contentBlocks": [
+      {
+        "text": "<p>I don't remember exactly when I picked up Atomic Habits, but I remember what I was like before it — someone who would decide to change everything at once, go hard for a week, burn out, and then feel guilty about it for the next month. That cycle was exhausting and I didn't even realise it was the system that was broken, not me.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>The book reframed everything. The biggest shift was understanding that dramatic change is actually the enemy of lasting change. Every time I felt like something in my life needed a complete overhaul, I'd go all in — new routine, new diet, new schedule, all at once. And every time, it collapsed. What Atomic Habits taught me is that the size of the change doesn't determine whether it sticks. The friction does.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>Now when I want to build a new habit, I don't ask \"how committed am I?\" I ask \"how easy can I make this?\" If there's too much friction between me and the habit, I'm setting myself up to fail — not because I lack discipline, but because I'm fighting human nature. So I change one small thing at a time. I make the new behaviour so easy that skipping it feels stranger than doing it.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>The guilt trap was the other thing that resonated deeply. Before, a missed day would spiral into a missed week because I'd already \"broken\" it. The book gave me permission to think differently — one bad day doesn't ruin a habit, trying to compensate with an unrealistic bounce-back does.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>It also quietly helped me see my bad habits more clearly. Once you understand how habits form — the cue, the craving, the routine, the reward — you start noticing them everywhere. In yourself, in others, in how products and spaces are designed around you. It's one of those books that changes how you see ordinary things.</p>",
+        "type": "paragraph"
+      },
+      {
+        "text": "<p>I'm not a perfect habit machine. But I'm a lot more honest with myself about what I can actually sustain — and that, more than any dramatic resolution, is what's actually moved the needle for me.</p>",
+        "type": "paragraph"
+      }
+    ]
+  }
+]

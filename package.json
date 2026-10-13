@@ -1,0 +1,11 @@
+{
+  "name": "adarsh-portfolio",
+  "version": "1.0.0",
+  "scripts": {
+    "export-data": "node export_data.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.0",
+    "firebase-admin": "^13.10.0"
+  }
+}

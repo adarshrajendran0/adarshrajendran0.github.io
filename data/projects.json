@@ -1,0 +1,215 @@
+[
+  {
+    "id": 3,
+    "order": 4,
+    "title": "SAE E-BAJA",
+    "description": "Drivetrain & Roll Cage Design",
+    "details": "Designed switchable AWD-2WD drivetrain and analyzed roll cage structural integrity for electric off-roader. Balanced performance, reliability, safety, and manufacturability across iterative builds in multidisciplinary team environment.",
+    "link": "",
+    "tags": [
+      "SolidWorks",
+      "FEA",
+      "Vehicle Design"
+    ],
+    "images": null,
+    "visibility": "public",
+    "highlight": false,
+    "status": "Completed",
+    "icon": "drive_eta",
+    "achievement": "Core Team Member"
+  },
+  {
+    "id": 1770230816678,
+    "order": 11,
+    "title": "Personal Portfolio Website",
+    "description": "Dynamic Content System",
+    "details": "<p><strong>Overview</strong></p><p><br></p><p>This project is a custom-built personal portfolio website designed as a living system rather than a static page. It serves as both a public-facing professional profile and a private content management platform, allowing the site to evolve continuously without repeated code changes.</p><p><br></p><p><strong>Motivation</strong></p><p><br></p><p>Traditional portfolios and resumes are static snapshots that quickly become outdated and require manual edits to maintain. I wanted a system that could grow with my career, reflect ongoing work, and reduce the friction involved in updating content.</p><p><br></p><p>Instead of treating the portfolio as a one-time deliverable, I approached it as an engineering problem: how to design a maintainable, extensible system for presenting professional information.</p><p><br></p><p><strong>Design Philosophy</strong></p><p><br></p><p>The website was intentionally designed around the following principles:</p><p><br></p><p><br></p><ul><li>Separation between content and presentation</li></ul><p><br></p><p><br></p><ul><li>Minimal friction for updates and iteration</li></ul><p><br></p><p><br></p><ul><li>Clean, distraction-free public interface</li></ul><p><br></p><p><br></p><ul><li>Private control over what is visible and when</li></ul><p><br></p><p><br></p><p>The goal was to build something I could actively use, not just showcase.</p><p><br></p><p><strong>Key Features</strong></p><p><br></p><p><br></p><ul><li>Public portfolio with sections for experience, projects, skills, and education</li></ul><p><br></p><p><br></p><ul><li>Password-protected admin panel for content management</li></ul><p><br></p><p><br></p><ul><li>Ability to add, edit, reorder, and hide sections without modifying source files</li></ul><p><br></p><p><br></p><ul><li>Support for images and structured project entries</li></ul><p><br></p><p><br></p><ul><li>Hosted via GitHub Pages for simplicity and reliability</li></ul><p><br></p><p><br></p><p><strong>Technical Implementation</strong></p><p><br></p><p>The site is built using standard web technologies (HTML, CSS, JavaScript) with a custom admin interface layered on top. The admin panel enables dynamic updates to the site content while keeping the public-facing pages lightweight and fast.</p><p><br></p><p>This approach allows the website to function as a personal content system rather than a static document, while remaining fully client-side and easy to deploy.</p><p><br></p><p><strong>What This Project Demonstrates</strong></p><p><br></p><p>This project reflects my broader engineering approach:</p><p><br></p><p><br></p><ul><li>Treating personal workflows as systems worth designing</li></ul><p><br></p><p><br></p><ul><li>Reducing repetitive effort through tooling</li></ul><p><br></p><p><br></p><ul><li>Valuing clarity, maintainability, and long-term usability</li></ul><p><br></p><p>While simple in appearance, the site is structured to support continuous iteration as my work and experience grow.</p>",
+    "link": "https://github.com/adarshrajendran0/adarshrajendran0.github.io",
+    "tags": [
+      "Web development",
+      "A I Tools",
+      "Content Management"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": false,
+    "status": "Active",
+    "icon": "work",
+    "achievement": null
+  },
+  {
+    "id": 101,
+    "order": 2,
+    "title": "Autonomous System R&D",
+    "description": "Confidential R&D Project",
+    "details": "Proprietary R&D project at Savtoa Software Technologies. Defined complete mechanical and control-system architecture for autonomous platform including system geometry, control-surface sizing, and active control logic.",
+    "link": "",
+    "tags": [
+      "R&D",
+      "Autonomous",
+      "Control Design",
+      "Confidential"
+    ],
+    "images": null,
+    "visibility": "private",
+    "highlight": true,
+    "status": "In Progress",
+    "icon": "smart_toy",
+    "achievement": "Ongoing R&D"
+  },
+  {
+    "id": 2,
+    "order": 5,
+    "title": "Heat Distribution Study",
+    "description": "Published at IIT Madras Conference",
+    "details": "Conducted CFD-based thermal analysis using ANSYS Fluent, evaluating heat distribution across four burner configurations. Identified most efficient arrangement using statistical temperature uniformity analysis. Presented at International Congress on Thermal Analysis and Calorimetry, IIT Madras.",
+    "link": "",
+    "tags": [
+      "CFD",
+      "Thermal Analysis",
+      "Research"
+    ],
+    "images": null,
+    "visibility": "public",
+    "highlight": true,
+    "status": "Completed",
+    "icon": "local_fire_department",
+    "achievement": "Published Paper"
+  },
+  {
+    "id": 6,
+    "order": 7,
+    "title": "Nano Fluid Mixer",
+    "description": "Epicyclic Gearbox Design",
+    "details": "Designed epicyclic gearbox for nano fluid mixer with complete 3D modeling in SolidWorks. Conducted motion studies and validated design through 3D printing to verify kinematic behavior.",
+    "link": "",
+    "tags": [
+      "SolidWorks",
+      "Mechanism",
+      "3D Printing"
+    ],
+    "images": null,
+    "visibility": "public",
+    "highlight": false,
+    "status": "Completed",
+    "icon": "settings",
+    "achievement": "Design & Prototyping"
+  },
+  {
+    "id": 4,
+    "order": 6,
+    "title": "Variable Nozzle Desuperheater",
+    "description": "Industrial CFD Project",
+    "details": "Conducted comprehensive CFD simulations in ANSYS Fluent for variable nozzle desuperheater at Instrumentation Limited Palakkad. Analyzed density, temperature and phase change patterns. Validated numerical findings against experimental data.",
+    "link": "",
+    "tags": [
+      "CFD",
+      "ANSYS Fluent",
+      "Validation"
+    ],
+    "images": null,
+    "visibility": "public",
+    "highlight": false,
+    "status": "Completed",
+    "icon": "water_drop",
+    "achievement": "Industry Internship"
+  },
+  {
+    "id": 1770230124783,
+    "order": 10,
+    "title": "GridPlot",
+    "description": "Internal R&D Data Visualization Tool",
+    "details": "<p><strong>Overview</strong></p><p><br></p><p>GridPlot is a custom Python-based data visualization and analysis tool developed to support R&amp;D testing workflows involving large, heterogeneous datasets. It was built to reduce friction between data collection, analysis, and engineering decision making during rapid iteration cycles.</p><p><br></p><p><strong>Background and Motivation</strong></p><p><br></p><p>During R&amp;D testing, data was generated across multiple test runs, sensors, locations, and configurations, typically stored in CSV or Excel files. Existing tools were either too rigid, required repetitive manual preprocessing, or were poorly suited for quick comparisons across datasets. As testing progressed, the lack of a flexible, repeatable analysis workflow became a bottleneck.</p><p><br></p><p>The need was not for another generic plotting script, but for a practical analysis workbench that allowed engineers to explore data, test hypotheses, and extract insights quickly without rewriting code for every new dataset.</p><p><br></p><p><strong>Design Goals</strong></p><p><br></p><p>The primary goals behind GridPlot were:</p><p><br></p><p><br></p><ul><li>Enable fast exploration of test data without heavy preprocessing</li></ul><p><br></p><p><br></p><ul><li>Support multiple data sources and test runs in a single view</li></ul><p><br></p><p><br></p><ul><li>Allow derived metrics and transformations without modifying raw data</li></ul><p><br></p><p><br></p><ul><li>Make analysis repeatable and easy to revisit</li></ul><p><br></p><p><br></p><ul><li>Keep the tool simple enough for daily use during testing cycles</li></ul><p><br></p><p><br></p><p><strong>Key Capabilities</strong></p><p><br></p><p>GridPlot allows users to load multiple spreadsheet files simultaneously and treat each dataset as an independent layer. For each layer, users can:</p><p><br></p><p><br></p><ul><li>Plot direct columns or define derived expressions</li></ul><p><br></p><p><br></p><ul><li>Apply scaling and offsets per dataset</li></ul><p><br></p><p><br></p><ul><li>Compare multiple datasets on a common axis</li></ul><p><br></p><p><br></p><ul><li>Visualize data spreads (min, max, median) to understand variation</li></ul><p><br></p><p><br></p><ul><li>Perform spatial indexing and aggregation for survey-style datasets</li></ul><p><br></p><p><br></p><p>To support real-world testing workflows, session persistence was implemented, allowing complete analysis states to be saved and restored. This significantly reduced setup time when revisiting past tests or comparing results across locations and iterations.</p><p><br></p><p><strong>Technical Implementation</strong></p><p><br></p><p>The application is built in Python with a desktop GUI using PyQt. Interactive visualizations are rendered using Plotly, enabling responsive exploration of large datasets. While AI-assisted tools were used to accelerate code development and refinement, the overall architecture, feature set, and workflows were driven entirely by observed engineering constraints and practical testing needs.</p><p><br></p><p><strong>Impact and Learnings</strong></p><p><br></p><p>GridPlot helped streamline data analysis during testing by making insights easier to access and comparisons faster to perform. More importantly, it reflects a broader engineering approach: identifying friction in workflows, abstracting the core problem, and building tools that improve clarity, learning speed, and decision quality.</p><p><br></p><p>Although initially developed as an internal utility, parts of the tool continue to support ongoing analysis workflows, reinforcing the value of building lightweight, purpose-driven engineering tools.</p>",
+    "link": "",
+    "tags": [
+      "Python",
+      "Data analysis",
+      "AI tools"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": true,
+    "status": "Active",
+    "icon": "work",
+    "achievement": null
+  },
+  {
+    "id": 5,
+    "order": 9,
+    "title": "Electronic Chip Cooling",
+    "description": "Conjugate Heat Transfer Analysis",
+    "details": "Employed ANSYS Spaceclaim and Fluent for multi-chip cooling system analysis at SRM Institute. Identified temperature and velocity patterns, establishing higher cooling fan velocity as key performance factor.",
+    "link": "",
+    "tags": [
+      "Heat Transfer",
+      "Electronics",
+      "CFD"
+    ],
+    "images": null,
+    "visibility": "public",
+    "highlight": false,
+    "status": "Completed",
+    "icon": "memory",
+    "achievement": "Academic Project"
+  },
+  {
+    "id": 7,
+    "order": 8,
+    "title": "Automated Bus Stairs",
+    "description": "Social Impact Prototype",
+    "details": "Designed automated stairs for public transport retrofitting to assist elderly and disabled passengers. Developed working prototype as diploma final year project. Presented at YIP Kerala 2nd Phase 2019.",
+    "link": "",
+    "tags": [
+      "Product Design",
+      "Automation",
+      "Prototyping"
+    ],
+    "images": null,
+    "visibility": "public",
+    "highlight": false,
+    "status": "Completed",
+    "icon": "accessible",
+    "achievement": "Diploma Project"
+  },
+  {
+    "id": 1779121732492,
+    "order": 1,
+    "title": "Mining Equipment Failure",
+    "description": "Failure Analysis Project",
+    "details": "<p>Conducted crack failure analysis of underground mining equipment at EIMCO Elecon. Validated load conditions, evaluated design alternatives, achieved improved factor of safety while reducing component weight.</p>",
+    "link": "",
+    "tags": [
+      "FEA",
+      "Failure Analysis",
+      "Mining",
+      "NDA"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": false,
+    "status": "Completed",
+    "icon": "work",
+    "achievement": "Industry Project"
+  },
+  {
+    "id": 1771259137055,
+    "order": 3,
+    "title": "National CFD Competition",
+    "description": "AIR 2 - National Level",
+    "details": "<h2><strong>National CFD Championship (SAE India) | 2nd Place</strong></h2><h3><strong>Simulation Analyst – Team \"Misfits\"</strong></h3><p><strong>\"Achieving national-level precision through computational efficiency and physics-led optimization.\"</strong></p><p><br></p><h3><strong>Project Overview</strong></h3><p>A 6-month national competition organized by SAE India, spanning from advanced CFD workshops at TKMCE to a 48-hour final \"Sprint\" in Chennai. The challenge involved multi-physics simulations, including internal pipe flows, wind turbine aerodynamics, and complex Conjugate Heat Transfer (CHT).</p><p><br></p><h3><strong>Technical Execution &amp; Strategy</strong></h3><ul><li><strong>Hardware Constraint as an Asset:</strong> While competing against high-performance workstations, I utilized an entry-level <strong>Intel i3 (7th Gen)</strong> system. This required a rigorous focus on <strong>Mesh Independence Studies</strong> and <strong>Local Refinement</strong> to ensure convergence and accuracy without exceeding hardware limits.</li><li><strong>Multi-Physics Simulations:</strong> Conducted steady-state and transient analyses for:</li><li class=\"ql-indent-1\"><strong>Conjugate Heat Transfer (CHT):</strong> Thermal management of a high-density server room with multiple heat sources and ventilation inlets.</li><li class=\"ql-indent-1\"><strong>Fluid Dynamics:</strong> 2D/3D analysis of wind turbine profiles and pressure-driven pipe flows using <strong>Ansys Fluent</strong>.</li><li><strong>Workflow Optimization:</strong> Developed a streamlined simulation pipeline that allowed our team to be the <strong>only group in the competition</strong> to achieve a 100% completion rate across all assignments ahead of schedule.</li></ul><h3><strong>Crisis Management &amp; Results</strong></h3><ul><li><strong>The Sprint Challenge:</strong> During a critical software-geometry anomaly in the finals, I pivoted the team’s focus to perfect the <strong>Solver Configuration</strong> and <strong>Post-Processing Logic</strong>.</li><li><strong>The Result:</strong> Secured <strong>2nd Place Nationally</strong>. The judges specifically commended our team's coordination and the superior quality of our post-processed results, noting that our methodology remained sound even under anomalous technical conditions.</li><li><strong>Validation:</strong> Post-competition, I verified the logic by re-solving the final problem, confirming that the methodology was 100% accurate and capable of producing high-fidelity thermal contours.</li></ul>",
+    "link": "",
+    "tags": [
+      "Ansys Fluent",
+      "CFD",
+      "Meshing Strategy (Inflation/Local Refinement)",
+      "Conjugate Heat Transfer",
+      "Technical Troubleshooting"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": true,
+    "status": "Completed",
+    "icon": "work",
+    "achievement": "AIR 2 - National Level"
+  }
+]
