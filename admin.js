@@ -361,22 +361,7 @@ function generateFormFields(type, data = {}) {
                                                                             </script>`;
 
     if (type === 'education') {
-        const blocksHtml = (data.contentBlocks || []).map((b, idx) => {
-            const isRich = b.type === 'paragraph';
-            const uniqueId = `quill_edu_${Date.now()}_${idx}`;
-            const inputField = isRich
-                ? `<div id="${uniqueId}" class="quill-editor-container" data-content="${(b.text || '').replace(/"/g, '&quot;')}" style="background:white;"></div>`
-                : `<input class="form-input block-content" placeholder="Enter content or URL..." value="${b.text}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">`;
-
-            return `
-            <div class="block-item" data-type="${b.type}" style="background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${b.type}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
-                </div>
-                ${inputField}
-            </div>`;
-        }).join('');
+        const blocksHtml = (data.contentBlocks || []).map((b, idx) => renderBlockItemHtml(b, idx)).join('');
 
         return `
             <input type="text" id="inp_degree" placeholder="Degree" value="${v('degree')}">
@@ -393,7 +378,7 @@ function generateFormFields(type, data = {}) {
                 <button type="button" class="btn-secondary" onclick="addContentBlock('header')">+ Header</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
-                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image</button>
                 <button type="button" class="btn-secondary" onclick="openPasteTextModal()">+ Paste Text</button>
             </div>
             `;
@@ -453,22 +438,7 @@ function generateFormFields(type, data = {}) {
             </div>`;
         }).join('');
 
-        const blocksHtml = (data.contentBlocks || []).map((b, idx) => {
-            const isRich = b.type === 'paragraph';
-            const uniqueId = `quill_edustory_${Date.now()}_${idx}`;
-            const inputField = isRich
-                ? `<div id="${uniqueId}" class="quill-editor-container" data-content="${(b.text || '').replace(/"/g, '&quot;')}" style="background:white;"></div>`
-                : `<input class="form-input block-content" placeholder="Enter content or URL..." value="${b.text}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">`;
-
-            return `
-            <div class="block-item" data-type="${b.type}" style="background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${b.type}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
-                </div>
-                ${inputField}
-            </div>`;
-        }).join('');
+        const blocksHtml = (data.contentBlocks || []).map((b, idx) => renderBlockItemHtml(b, idx)).join('');
 
         return `
             <label style="display:block;margin-bottom:5px;font-weight:600;">Link to Degree</label>
@@ -506,7 +476,7 @@ function generateFormFields(type, data = {}) {
                 <button type="button" class="btn-secondary" onclick="addContentBlock('header')">+ Header</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
-                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image</button>
                 <button type="button" class="btn-secondary" onclick="openPasteTextModal()">+ Paste Text</button>
             </div>
         `;
@@ -539,23 +509,7 @@ function generateFormFields(type, data = {}) {
             </div>`;
         }).join('');
 
-        const blocksHtml = (data.contentBlocks || []).map((b, idx) => {
-            const isRich = b.type === 'paragraph';
-            const uniqueId = `quill_exist_${Date.now()}_${idx}`;
-
-            const inputField = isRich
-                ? `<div id="${uniqueId}" class="quill-editor-container" data-content="${(b.text || '').replace(/"/g, '&quot;')}" style="background:white;"></div>`
-                : `<input class="form-input block-content" placeholder="Enter content or URL..." value="${b.text}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">`;
-
-            return `
-            <div class="block-item" data-type="${b.type}" style="background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;">
-                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${b.type}</span>
-                    <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
-                </div>
-                ${inputField}
-            </div>`;
-        }).join('');
+        const blocksHtml = (data.contentBlocks || []).map((b, idx) => renderBlockItemHtml(b, idx)).join('');
 
         return `
             <input type="text" id="inp_perCategory" placeholder="Category (e.g. Travel, Photography)" value="${v('category')}">
@@ -587,7 +541,7 @@ function generateFormFields(type, data = {}) {
                 <button type="button" class="btn-secondary" onclick="addContentBlock('header')">+ Header</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('paragraph')">+ Paragraph</button>
                 <button type="button" class="btn-secondary" onclick="addContentBlock('quote')">+ Quote</button>
-                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image URL</button>
+                <button type="button" class="btn-secondary" onclick="addContentBlock('image')">+ Image</button>
                 <button type="button" class="btn-secondary" onclick="openPasteTextModal()">+ Paste Text</button>
             </div>
         `;
@@ -1087,38 +1041,131 @@ function startCrop(input) {
 
 
 // ==========================================
-// NEW: CONTENT BUILDER HELPERS
+// CONTENT BUILDER HELPERS WITH UPLOAD SUPPORT
 // ==========================================
+
+function renderBlockItemHtml(b, idx) {
+    const isRich = b.type === 'paragraph';
+    const isImage = b.type === 'image';
+    const uniqueId = `quill_block_${Date.now()}_${idx}`;
+    let inputField = '';
+
+    if (isRich) {
+        inputField = `<div id="${uniqueId}" class="quill-editor-container" data-content="${(b.text || '').replace(/"/g, '&quot;')}" style="background:white;"></div>`;
+    } else if (isImage) {
+        const url = b.text || '';
+        inputField = `
+            <div class="image-block-wrapper" style="display:flex; gap:12px; align-items:center; background:#fff; padding:10px; border-radius:6px; border:1px solid #e0e0e0;">
+                <img src="${url}" class="block-img-preview" style="width:64px; height:64px; object-fit:cover; border-radius:6px; border:1px solid #ddd; ${url ? '' : 'display:none;'}" alt="Preview">
+                <div style="flex-grow:1;">
+                    <input class="form-input block-content" placeholder="Image URL (auto-filled on upload)" value="${url.replace(/"/g, '&quot;')}" style="width:100%; border:1px solid #ccc; padding:6px; font-family:inherit; font-size:0.85rem; border-radius:4px; margin-bottom:6px;">
+                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <button type="button" class="btn-secondary" onclick="triggerBlockUpload(this, false)" style="font-size:0.8rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px;">
+                            <span class="material-symbols-rounded" style="font-size:1.1rem;">upload</span> Upload Image
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="triggerBlockUpload(this, true)" style="font-size:0.8rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px;">
+                            <span class="material-symbols-rounded" style="font-size:1.1rem;">crop</span> Upload & Crop
+                        </button>
+                        <span class="upload-status" style="font-size:0.8rem; font-weight:500; display:none;"></span>
+                        <input type="file" accept="image/*" style="display:none;" onchange="handleBlockImageSelected(this)">
+                    </div>
+                </div>
+            </div>`;
+    } else {
+        inputField = `<input class="form-input block-content" placeholder="Enter content or URL..." value="${(b.text || '').replace(/"/g, '&quot;')}" style="width:100%; border:1px solid #ccc; padding:8px; font-family:inherit; border-radius:4px;">`;
+    }
+
+    return `
+    <div class="block-item" data-type="${b.type}" style="background:#f9f9f9; padding:10px; margin-bottom:8px; border:1px solid #ddd; border-radius:6px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="block-label" style="font-size:0.75rem; font-weight:bold; color:#555; text-transform:uppercase;">${b.type}</span>
+            <button onclick="this.closest('.block-item').remove()" style="color:#d32f2f; background:none; border:none; cursor:pointer; font-size:1.2rem; line-height:1;" title="Delete block">&times;</button>
+        </div>
+        ${inputField}
+    </div>`;
+}
+
+function triggerBlockUpload(btn, shouldCrop = false) {
+    const wrapper = btn.closest('.image-block-wrapper');
+    if (!wrapper) return;
+    const fileInput = wrapper.querySelector('input[type="file"]');
+    if (fileInput) {
+        fileInput.dataset.shouldCrop = shouldCrop ? 'true' : 'false';
+        fileInput.click();
+    }
+}
+
+async function handleBlockImageSelected(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    const shouldCrop = input.dataset.shouldCrop === 'true';
+    const wrapper = input.closest('.image-block-wrapper');
+    const urlInput = wrapper.querySelector('.block-content');
+    const previewImg = wrapper.querySelector('.block-img-preview');
+    const statusSpan = wrapper.querySelector('.upload-status');
+    const buttons = wrapper.querySelectorAll('button');
+
+    buttons.forEach(b => b.disabled = true);
+    if (statusSpan) {
+        statusSpan.style.display = 'inline';
+        statusSpan.style.color = '#1976d2';
+        statusSpan.textContent = shouldCrop ? 'Crop in modal...' : 'Uploading...';
+    }
+
+    try {
+        let fileOrBlob = file;
+        let ext = file.name.split('.').pop() || 'jpg';
+
+        if (shouldCrop && window.universalCropper) {
+            fileOrBlob = await window.universalCropper.start(file);
+            ext = 'jpg';
+        }
+
+        if (statusSpan) statusSpan.textContent = 'Uploading to storage...';
+
+        const folder = currentAdminTab || 'education';
+        const safeName = file.name.replace(/[^a-z0-9.]/gi, '_').toLowerCase();
+        const filename = `${folder}/img_${Date.now()}_${safeName}`;
+        const publicUrl = await uploadFileToStorage(fileOrBlob, filename);
+
+        urlInput.value = publicUrl;
+        if (previewImg) {
+            previewImg.src = publicUrl;
+            previewImg.style.display = 'block';
+        }
+
+        if (statusSpan) {
+            statusSpan.style.color = '#388e3c';
+            statusSpan.textContent = 'Uploaded!';
+            setTimeout(() => { if (statusSpan) statusSpan.style.display = 'none'; }, 2500);
+        }
+    } catch (err) {
+        console.error('Image upload failed:', err);
+        if (err !== 'Cancelled' && err !== 'cancelled') {
+            alert('Upload failed: ' + (err.message || err));
+        }
+        if (statusSpan) statusSpan.style.display = 'none';
+    } finally {
+        buttons.forEach(b => b.disabled = false);
+        input.value = '';
+    }
+}
 
 function addContentBlock(type, value = '') {
     const container = document.getElementById('contentBlocksContainer');
-    const div = document.createElement('div');
-    const uniqueId = `quill_block_${Date.now()}`;
-    div.className = 'block-item';
-    div.dataset.type = type;
-    div.style.cssText = "background:#f9f9f9; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:4px;";
-
-    let inputField = '';
-    if (type === 'paragraph') {
-        inputField = `<div id="${uniqueId}" class="quill-editor-container" style="background:white;"></div>`;
-    } else {
-        inputField = `<input class="form-input block-content" placeholder="Enter ${type} content..." value="${value.replace(/"/g, '&quot;')}" style="width:100%; border:1px solid #ccc; padding:5px; font-family:inherit;">`;
-    }
-
-    div.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-            <span class="block-label" style="font-size:0.71rem; font-weight:bold; color:#555; text-transform:uppercase;">${type}</span>
-            <button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
-        </div>
-        ${inputField}
-    `;
+    if (!container) return;
+    const idx = Date.now();
+    const html = renderBlockItemHtml({ type, text: value }, idx);
+    const temp = document.createElement('div');
+    temp.innerHTML = html.trim();
+    const div = temp.firstElementChild;
     container.appendChild(div);
 
     if (type === 'paragraph') {
-        initQuill(document.getElementById(uniqueId), value);
+        const quillDiv = div.querySelector('.quill-editor-container');
+        if (quillDiv) initQuill(quillDiv, value);
     }
 
-    // Scroll to bottom
     container.scrollTop = container.scrollHeight;
 }
 
