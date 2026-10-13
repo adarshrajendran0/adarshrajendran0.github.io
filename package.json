@@ -2,7 +2,8 @@
   "name": "adarsh-portfolio",
   "version": "1.0.0",
   "scripts": {
-    "export-data": "node export_data.js"
+    "sync-data": "node scripts/sync-data.js",
+    "export-data": "node scripts/sync-data.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.0",

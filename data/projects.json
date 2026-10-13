@@ -38,26 +38,6 @@
     "achievement": null
   },
   {
-    "id": 101,
-    "order": 2,
-    "title": "Autonomous System R&D",
-    "description": "Confidential R&D Project",
-    "details": "Proprietary R&D project at Savtoa Software Technologies. Defined complete mechanical and control-system architecture for autonomous platform including system geometry, control-surface sizing, and active control logic.",
-    "link": "",
-    "tags": [
-      "R&D",
-      "Autonomous",
-      "Control Design",
-      "Confidential"
-    ],
-    "images": null,
-    "visibility": "private",
-    "highlight": true,
-    "status": "In Progress",
-    "icon": "smart_toy",
-    "achievement": "Ongoing R&D"
-  },
-  {
     "id": 2,
     "order": 5,
     "title": "Heat Distribution Study",
@@ -190,6 +170,26 @@
     "status": "Completed",
     "icon": "work",
     "achievement": "Industry Project"
+  },
+  {
+    "id": 101,
+    "order": 2,
+    "title": "Autonomous System R&D",
+    "description": "Confidential R&D Project",
+    "details": "Proprietary R&D project at Savtoa Software Technologies. Defined complete mechanical and control-system architecture for autonomous platform including system geometry, control-surface sizing, and active control logic.",
+    "link": "",
+    "tags": [
+      "R&D",
+      "Autonomous",
+      "Control Design",
+      "Confidential"
+    ],
+    "images": null,
+    "visibility": "private",
+    "highlight": true,
+    "status": "Completed",
+    "icon": "smart_toy",
+    "achievement": "Ongoing R&D"
   },
   {
     "id": 1771259137055,
