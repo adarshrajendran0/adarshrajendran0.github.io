@@ -1,15 +1,6 @@
 [
   {
-    "id": 90,
-    "order": 1,
-    "degree": "Diploma",
-    "field": "Mechanical Engineering",
-    "institution": "Carmel Polytechnic College, Punnapra",
-    "year": "2020",
-    "contentBlocks": []
-  },
-  {
-    "id": 1791912393253,
+    "id": 1791913663525,
     "order": 2,
     "degree": "Bachelor of Technology",
     "field": "Mechanical Engineering",
@@ -17,7 +8,21 @@
     "year": "2024",
     "contentBlocks": [
       {
-        "text": "https://www.tkmim.ac.in/category/institutions/",
+        "text": "https://akmawwkmfvvaftlrhmmp.supabase.co/storage/v1/object/public/portfolio/education/img_1791913646283_images.jpeg",
+        "type": "image"
+      }
+    ]
+  },
+  {
+    "id": 1791913751724,
+    "order": 1,
+    "degree": "Diploma",
+    "field": "Mechanical Engineering",
+    "institution": "Carmel Polytechnic College, Punnapra",
+    "year": "2020",
+    "contentBlocks": [
+      {
+        "text": "https://akmawwkmfvvaftlrhmmp.supabase.co/storage/v1/object/public/portfolio/education/img_1791913749020_65a665c1c1bd7carmelpolytechniccollege.jpg",
         "type": "image"
       }
     ]

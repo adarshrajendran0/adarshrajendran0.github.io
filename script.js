@@ -381,11 +381,27 @@ function openExperienceStory(trigger) {
     // Use the iOS expand animation
     openModal('experienceStoryModal', trigger);
 }
+function getEducationImage(edu) {
+    if (!edu) return null;
+    if (edu.thumbnail) return edu.thumbnail;
+    if (edu.image) return edu.image;
+    if (edu.contentBlocks && Array.isArray(edu.contentBlocks)) {
+        const imgBlock = edu.contentBlocks.find(b => b.type === 'image' && b.text);
+        if (imgBlock) return imgBlock.text;
+    }
+    return null;
+}
+
 function renderEducation() {
     const container = document.getElementById('educationList'); if (!container) return;
     container.innerHTML = '';
     dataCache.education.forEach(edu => {
-        container.innerHTML += `<div class="education-card" data-animate onclick="openEducationDetail('${edu.docId}')" style="cursor:pointer;"><div class="edu-icon"><span class="material-symbols-rounded">school</span></div><h3>${edu.degree}</h3><p class="edu-field">${edu.field}</p><p class="edu-institution">${edu.institution}</p><p class="edu-year">${edu.year}</p></div>`;
+        const eduImg = getEducationImage(edu);
+        const iconHtml = eduImg
+            ? `<img src="${convertGoogleDriveLink(eduImg)}" alt="${edu.institution}" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;">`
+            : `<span class="material-symbols-rounded">school</span>`;
+
+        container.innerHTML += `<div class="education-card" data-animate onclick="openEducationDetail('${edu.docId}')" style="cursor:pointer;"><div class="edu-icon">${iconHtml}</div><h3>${edu.degree}</h3><p class="edu-field">${edu.field}</p><p class="edu-institution">${edu.institution}</p><p class="edu-year">${edu.year}</p></div>`;
     });
 }
 function openEducationDetail(docId) {
@@ -408,10 +424,7 @@ function openEducationDetail(docId) {
         title = `${item.degree} - Stories`;
     } else {
         // --- MODE B: Synthetic Story (The Education Item Itself) ---
-        // We create a "Story" object that mimics the Education Item properties
-        // This ensures the "List View" has something to show (1 Card), 
-        // and when clicked, it opens the Reader.
-        // Importantly, "Back" will now work because we are inside BlogApp structure.
+        const eduThumb = getEducationImage(item);
 
         itemsToDisplay = [{
             docId: item.docId,      // Keep ID
@@ -419,8 +432,7 @@ function openEducationDetail(docId) {
             category: item.year,      // Year -> Category (Badge)
             summary: item.institution, // Institution -> Summary
             contentBlocks: item.contentBlocks, // Content
-            thumbnail: null,          // Can set a default icon later if needed
-            // Extra metadata to help rendering if needed
+            thumbnail: eduThumb,      // Extracted from image block
             isSynthetic: true
         }];
     }
@@ -933,12 +945,18 @@ const BlogApp = {
                 const firstImg = item.images[0];
                 thumbUrl = typeof firstImg === 'string' ? firstImg : firstImg.url;
             }
+            if (!thumbUrl && item.contentBlocks && Array.isArray(item.contentBlocks)) {
+                const firstImgBlock = item.contentBlocks.find(b => b.type === 'image' && b.text);
+                if (firstImgBlock) {
+                    thumbUrl = firstImgBlock.text;
+                }
+            }
             // Fallback for google drive links
             thumbUrl = convertGoogleDriveLink(thumbUrl);
 
             const thumbHTML = thumbUrl
-                ? `<div class="card-image"><img src="${thumbUrl}" loading="lazy" alt="${item.title}"></div>`
-                : `<div class="card-image"><div class="placeholder-thumb">${item.category.charAt(0)}</div></div>`;
+                ? `<div class="card-image"><img src="${thumbUrl}" loading="lazy" alt="${item.title}" style="width:100%; height:100%; object-fit:cover;"></div>`
+                : `<div class="card-image"><div class="placeholder-thumb">${item.category ? item.category.charAt(0) : 'E'}</div></div>`;
 
             return `
             <div class="personal-card" onclick="BlogApp.openReader('${item.docId}', this)">
@@ -992,7 +1010,11 @@ const BlogApp = {
                     ${imagesHTML}
                 </div>`;
         } else if (item.thumbnail) {
-            html += `<img src="${item.thumbnail}" class="reader-hero-img">`;
+            const firstBlock = item.contentBlocks && item.contentBlocks[0];
+            const isDup = firstBlock && firstBlock.type === 'image' && convertGoogleDriveLink(firstBlock.text) === convertGoogleDriveLink(item.thumbnail);
+            if (!isDup) {
+                html += `<img src="${item.thumbnail}" class="reader-hero-img">`;
+            }
         }
 
         if (item.contentBlocks && item.contentBlocks.length > 0) {
