@@ -239,7 +239,7 @@
     "title": "Atomic Habits",
     "description": "Context-Aware Android Habit System",
     "details": "<p><strong>Overview</strong></p><p><br></p><p>An experimental native Android habit system designed around the behavioral psychology principles of James Clear's <em>Atomic Habits</em>. Rather than functioning as a passive checklist, the app explores how mobile operating system capabilities—specifically contextual location awareness and home-screen widgets—can reduce psychological friction in habit formation.</p><p><br></p><p><strong>Core Behavioral Concepts &amp; Features</strong></p><p><br></p><ul><li><strong>Location-Triggered Cues (Geofencing):</strong> Habits are heavily influenced by environment. Using Android's <code>LocationServices</code> and <code>GeofenceBroadcastReceiver</code>, the app delivers contextual nudges when entering specific physical environments (e.g., gym, office, library).</li></ul><p><br></p><ul><li><strong>Frictionless Home Screen Widget:</strong> Built custom Android app widgets (<code>HabitWidgetProvider</code> &amp; <code>StackView</code>) allowing instant glanceability and single-tap completions directly from the launcher without opening the full app.</li></ul><p><br></p><ul><li><strong>Daily Focus &amp; Reflection:</strong> Replaces guilt-inducing streak breaks with a structured <em>Today</em> queue and a reflection journal interface to diagnose why habits stall.</li></ul><p><br></p><p><strong>Technical Stack &amp; Architecture</strong></p><p><br></p><ul><li><strong>Language &amp; UI:</strong> 100% Kotlin with modern declarative Jetpack Compose and Material 3 design tokens.</li></ul><p><br></p><ul><li><strong>Architecture:</strong> Unidirectional Data Flow (UDF) / MVVM with <code>HabitViewModel</code> and Kotlin Coroutines/Flow.</li></ul><p><br></p><ul><li><strong>Local Persistence:</strong> Offline-first architecture using Room database (<code>AppDatabase</code>, <code>HabitDao</code>, <code>HabitRepository</code>).</li></ul><p><br></p><ul><li><strong>AI Integration:</strong> Integrated with the Gemini API for adaptive reflection prompts and habit coaching insights.</li></ul><p><br></p><p><strong>Project Status &amp; Learnings</strong></p><p><br></p><p>Kept as an experimental architectural prototype to validate geofence-triggered intent and widget-first UX. Serves as a direct exploration of translating behavioral psychology into native mobile software.</p>",
-    "link": "https://github.com/adarshrajendran0/Sift",
+    "link": "https://github.com/adarshrajendran0/Atomic-Habits",
     "tags": [
       "Android",
       "Kotlin",
@@ -253,6 +253,28 @@
     "highlight": false,
     "status": "Prototype",
     "icon": "psychology",
+    "achievement": null
+  },
+  {
+    "id": 1792429372309,
+    "order": 14,
+    "title": "Sift",
+    "description": "Zero-Latency GTD Thought Capture & Triage System",
+    "details": "<p><strong>Overview</strong></p><p><br></p><p>An opinionated, zero-friction Android implementation of David Allen's <em>Getting Things Done</em> (GTD) methodology. Designed under a single uncompromising constraint: <strong>getting a thought out of your head and into a trusted, offline-first local store in under three seconds</strong> before working memory fades.</p><p><br></p><p><strong>Sub-Three-Second Capture Vectors</strong></p><p><br></p><ul><li><strong>Floating Capture Activity:</strong> A lightweight, transparent dialog activity (<code>CaptureActivity</code>) that pops immediately with an auto-focused keyboard and dismisses upon sending without opening the full application window.</li><li><strong>System-Wide Entry Points:</strong> Accessible anywhere in Android via a Quick Settings Tile (<code>SiftTileService</code>), Launcher App Widget (<code>SiftWidget</code>), Android Global Share Sheet receiver, and Process Text context menus.</li><li><strong>Haptic Feedback Engine:</strong> Integrated subtle haptic responses (<code>HapticsService</code>) confirming capture without requiring visual verification.</li></ul><p><br></p><p><strong>Deterministic GTD Processing Engine</strong></p><p><br></p><ul><li><strong>State Machine Triage:</strong> A structured interactive triage flow (<code>ProcessingStateMachine</code>) guiding the user through classic GTD inquiry: <em>Is it actionable?</em> &rarr; <em>Will it take less than 2 minutes?</em> &rarr; <em>Next Action vs. Project vs. Someday vs. Reference</em>.</li><li><strong>Contextual Categorization:</strong> Filterable by custom execution contexts (e.g. <code>@desk</code>, <code>@calls</code>, <code>@errands</code>) and project associations.</li><li><strong>Event-Sourced Audit &amp; Undo:</strong> An immutable <code>events</code> journal table paired with Room DB, enabling instant one-tap undo across state transitions without data corruption.</li></ul><p><br></p><p><strong>Technical Stack &amp; Architecture</strong></p><p><br></p><ul><li><strong>UI &amp; Toolkit:</strong> 100% Kotlin with Jetpack Compose, Material 3 design tokens, and edge-to-edge drawing.</li><li><strong>Architecture:</strong> Unidirectional Data Flow (UDF) / MVVM with Kotlin Coroutines and <code>StateFlow</code>.</li><li><strong>Local Storage:</strong> Room Database with multi-schema migrations (<code>AppDatabase</code>, <code>ItemDao</code>, <code>ContextDao</code>).</li></ul><p><br></p><p><strong>Project Status</strong></p><p><br></p><p>Developed as an experimental productivity prototype to validate rapid-capture mobile primitives and state-machine-driven task triage.</p>",
+    "link": "https://github.com/adarshrajendran0/Sift",
+    "tags": [
+      "Android",
+      "Kotlin",
+      "Jetpack Compose",
+      "GTD",
+      "Room DB",
+      "Event Sourcing"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": false,
+    "status": "Prototype",
+    "icon": "filter_alt",
     "achievement": null
   }
 ]
