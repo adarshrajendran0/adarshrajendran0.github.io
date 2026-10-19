@@ -232,5 +232,27 @@
     "status": "Prototype",
     "icon": "account_balance_wallet",
     "achievement": null
+  },
+  {
+    "id": 1792428994079,
+    "order": 13,
+    "title": "Atomic Habits",
+    "description": "Context-Aware Android Habit System",
+    "details": "<p><strong>Overview</strong></p><p><br></p><p>An experimental native Android habit system designed around the behavioral psychology principles of James Clear's <em>Atomic Habits</em>. Rather than functioning as a passive checklist, the app explores how mobile operating system capabilities—specifically contextual location awareness and home-screen widgets—can reduce psychological friction in habit formation.</p><p><br></p><p><strong>Core Behavioral Concepts &amp; Features</strong></p><p><br></p><ul><li><strong>Location-Triggered Cues (Geofencing):</strong> Habits are heavily influenced by environment. Using Android's <code>LocationServices</code> and <code>GeofenceBroadcastReceiver</code>, the app delivers contextual nudges when entering specific physical environments (e.g., gym, office, library).</li></ul><p><br></p><ul><li><strong>Frictionless Home Screen Widget:</strong> Built custom Android app widgets (<code>HabitWidgetProvider</code> &amp; <code>StackView</code>) allowing instant glanceability and single-tap completions directly from the launcher without opening the full app.</li></ul><p><br></p><ul><li><strong>Daily Focus &amp; Reflection:</strong> Replaces guilt-inducing streak breaks with a structured <em>Today</em> queue and a reflection journal interface to diagnose why habits stall.</li></ul><p><br></p><p><strong>Technical Stack &amp; Architecture</strong></p><p><br></p><ul><li><strong>Language &amp; UI:</strong> 100% Kotlin with modern declarative Jetpack Compose and Material 3 design tokens.</li></ul><p><br></p><ul><li><strong>Architecture:</strong> Unidirectional Data Flow (UDF) / MVVM with <code>HabitViewModel</code> and Kotlin Coroutines/Flow.</li></ul><p><br></p><ul><li><strong>Local Persistence:</strong> Offline-first architecture using Room database (<code>AppDatabase</code>, <code>HabitDao</code>, <code>HabitRepository</code>).</li></ul><p><br></p><ul><li><strong>AI Integration:</strong> Integrated with the Gemini API for adaptive reflection prompts and habit coaching insights.</li></ul><p><br></p><p><strong>Project Status &amp; Learnings</strong></p><p><br></p><p>Kept as an experimental architectural prototype to validate geofence-triggered intent and widget-first UX. Serves as a direct exploration of translating behavioral psychology into native mobile software.</p>",
+    "link": "https://github.com/adarshrajendran0/Sift",
+    "tags": [
+      "Android",
+      "Kotlin",
+      "Jetpack Compose",
+      "Room DB",
+      "Geofencing",
+      "Behavioral UX"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": false,
+    "status": "Prototype",
+    "icon": "psychology",
+    "achievement": null
   }
 ]
