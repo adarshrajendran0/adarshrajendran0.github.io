@@ -211,5 +211,26 @@
     "status": "Completed",
     "icon": "work",
     "achievement": "AIR 2 - National Level"
+  },
+  {
+    "id": 1792426359659,
+    "order": 12,
+    "title": "Spend Tracker",
+    "description": "Frictionless Android Expense Logging System",
+    "details": "<p><strong>Overview</strong></p><p><br></p><p>An experimental Android utility engineered to solve the primary failure mode of personal finance tools: <strong>logging friction</strong>. Built as a personal daily driver through rapid prototyping with Google AI Studio (&quot;vibe coding&quot;), the app focuses entirely on minimizing the interaction cost of recording expenses.</p><p><br></p><p><strong>The Problem</strong></p><p><br></p><p>Most expense trackers fail because manual logging demands too many steps: unlocking the phone, launching an app, navigating menus, and filling out multiple form fields. Over time, tracking fatigue leads to abandoned consistency.</p><p><br></p><p><strong>System Architecture &amp; Key Features</strong></p><p><br></p><p>To test different friction-reduction mechanics, two distinct modes were implemented:</p><p><br></p><ul><li><strong>Passive Event-Driven Capture:</strong> Monitors payment notifications to trigger an instant floating confirmation overlay, or automatically parses vendor and transaction amounts directly from notification data.</li></ul><p><br></p><ul><li><strong>Hardware-Triggered Privacy Mode (Assist Intent):</strong> For users who prefer complete privacy without granting notification-reading permissions, the app hooks into the Android Assist intent. Long-pressing the power button (or assistant gesture) immediately summons a lightweight 2-field popup (amount + category) that dismisses in under two seconds.</li></ul><p><br></p><p><strong>Rapid Prototyping with Google AI Studio</strong></p><p><br></p><p>Rather than hand-writing boilerplate Android scaffolding, I leveraged Google AI Studio for rapid &quot;vibe coding&quot; iteration:</p><p><br></p><ul><li>Iteratively explored Android system hooks (<code>NotificationListenerService</code>, Assist intents, and overlay window management).</li></ul><p><br></p><ul><li>Focused effort on low-latency UI ergonomics and instant-entry popups rather than distribution overhead.</li></ul><p><br></p><p><strong>Key Takeaway</strong></p><p><br></p><p>Validated that reducing interaction cost from ~15 seconds to sub-2-seconds dramatically sustains habit tracking. Serves as a working demonstration of pragmatic UX and AI-augmented rapid tool building.</p>",
+    "link": "",
+    "tags": [
+      "Android",
+      "Google AI Studio",
+      "Vibe Coding",
+      "System UX",
+      "Privacy-First"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": false,
+    "status": "Prototype",
+    "icon": "account_balance_wallet",
+    "achievement": null
   }
 ]
