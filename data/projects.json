@@ -276,5 +276,28 @@
     "status": "Prototype",
     "icon": "filter_alt",
     "achievement": null
+  },
+  {
+    "id": 1792430113543,
+    "order": 15,
+    "title": "RR310 Connect",
+    "description": "Reverse-Engineered BLE Motorcycle Telemetry & HUD Navigation",
+    "details": "<p><strong>Overview</strong></p><p><br></p><p>A native Android system built as a lightweight, performant alternative to the proprietary TVS SmartXonnect app for the <strong>TVS Apache RR 310 / BMW G310 platform (U400 TFT Cluster)</strong>. Developed through <strong>black-box reverse engineering of the motorcycle's proprietary Bluetooth Low Energy (BLE) and SPP protocol</strong> to deliver instant HUD navigation, live high-frequency engine telemetry, and handlebar hardware integration without OEM bloat.</p><p><br></p><p><strong>Reverse-Engineered Protocol &amp; Packet Architecture</strong></p><p><br></p><ul><li><strong>20-Byte Scrambled Frame Specification:</strong> Decoded the proprietary TVS cluster framing protocol. All frames use fixed 20-byte payloads with framing headers (<code>0x5A</code>, <code>0x5B</code>), trailer byte (<code>0xFF</code>), and a hardware-level <code>XOR 0xEA</code> payload scrambling mask across bytes 2..18.</li><li><strong>Bi-Directional GATT Stream:</strong> Communicates over custom TVS GATT service UUIDs (<code>00005352-0000-1000-8000-00805F9B34FB</code>) with sub-100ms connection handshake upon motorcycle ignition.</li><li><strong>Two-Way Clock &amp; Telemetry Sync:</strong> Automatically broadcasts synchronized 12-hour clock packets, phone battery level (0–5 mapped scale), signal strength bars, and configurable speed thresholds every 2 seconds.</li></ul><p><br></p><p><strong>Live Instrument Telemetry Decoding</strong></p><p><br></p><ul><li><strong>High-Frequency Vehicle Dynamics:</strong> Decodes real-time sensor packets streamed from the bike ECU:<ul><li><strong>Engine Speed:</strong> High-resolution 16-bit big-endian engine RPM (0–11,000 RPM) tracked for shift warnings.</li><li><strong>Transmission &amp; Speed:</strong> 1:1 km/h wheel speed, gear position indicators (Neutral + 1–6), and Trip A/Odometer decameter parsing.</li><li><strong>Thermal &amp; Electrical Health:</strong> Real-time engine coolant temperature (Celsius scale offset calibration) and 10th-of-a-volt battery voltage monitoring.</li><li><strong>Dynamics &amp; Fuel:</strong> Fuel tank capacity percentage, calculated Distance-to-Empty (DTE), and active riding mode detection (Urban, Rain, Sport, Track).</li></ul></li><li><strong>Session Persistence:</strong> Local Room DB (<code>AppDatabase</code>, <code>RideDao</code>) logging continuous ride telemetry summaries, top speed, peak RPM, and last parked GPS coordinates.</li></ul><p><br></p><p><strong>Google Maps HUD Navigation Pipeline</strong></p><p><br></p><ul><li><strong>Zero-API Notification Interception:</strong> Uses Android's <code>NotificationListenerService</code> to parse ongoing Google Maps navigation state without requiring costly or restrictive Maps SDK APIs.</li><li><strong>Maneuver Translation Engine:</strong> Maps complex natural navigation instructions into the TFT cluster's native hardware pictogram arrow IDs (straight, slight/hard turns, U-turns, and multi-exit roundabouts 1–6), packaging exact distance to turn and remaining ETA directly to the dashboard.</li></ul><p><br></p><p><strong>Handlebar Switchgear &amp; Action Cam Control</strong></p><p><br></p><ul><li><strong>Hardware Macro Detection:</strong> Intercepting switchgear button bitmasks from the handlebar controls to trigger action camera gestures (e.g., <code>Down &rarr; Left &rarr; Down &rarr; Left</code> to start recording on a DJI Action 4 via BLE shutter).</li><li><strong>Dashboard HUD Popups:</strong> Feeding synthetic alert frames to show brief HUD confirmation banners (e.g. <em>\"DJI Action 4: RECORDING\"</em>) directly on the motorcycle TFT display while riding.</li></ul><p><br></p><p><strong>Technical Stack</strong></p><p><br></p><ul><li><strong>Languages &amp; UI:</strong> Kotlin, Jetpack Compose, Material 3, Coroutines, StateFlow.</li><li><strong>Connectivity &amp; Hardware:</strong> Android Bluetooth Low Energy (BLE), GATT Client, RFCOMM / Classic SPP, Android Notification Access.</li><li><strong>Data &amp; Persistence:</strong> Room SQLite Database, Proto DataStore.</li></ul>",
+    "link": "https://github.com/adarshrajendran0/RR310-Connect",
+    "tags": [
+      "Embedded Systems",
+      "BLE / GATT",
+      "Reverse Engineering",
+      "Android",
+      "Kotlin",
+      "Jetpack Compose",
+      "IoT / Telemetry"
+    ],
+    "images": [],
+    "visibility": "public",
+    "highlight": true,
+    "status": "Prototype",
+    "icon": "two_wheeler",
+    "achievement": null
   }
 ]
